@@ -323,7 +323,6 @@ function App() {
                 <ExportReport
                   checklistItems={checklistItems}
                   watchModel={selectedGuideId ? watchGuides.find(g => g.id === selectedGuideId)?.model || null : null}
-                  onExport={handleExport}
                 />
               </div>
             </>
