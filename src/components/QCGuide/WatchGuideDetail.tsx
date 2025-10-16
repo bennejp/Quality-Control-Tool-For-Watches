@@ -9,7 +9,6 @@ export const WatchGuideDetail: React.FC<WatchGuideDetailProps> = ({ guide }) => 
     <div className="watch-guide-detail">
       <div className="guide-header">
         <h3>{guide.brand} {guide.model}</h3>
-        <p className="reference-number">{guide.referenceNumber}</p>
       </div>
 
       <div className="guide-section">

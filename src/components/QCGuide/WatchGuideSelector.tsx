@@ -22,7 +22,7 @@ export const WatchGuideSelector: React.FC<WatchGuideSelectorProps> = ({
         <option value="">Generic Checklist</option>
         {guides.map(guide => (
           <option key={guide.id} value={guide.id}>
-            {guide.brand} {guide.model} ({guide.referenceNumber})
+            {guide.brand} {guide.model}
           </option>
         ))}
       </select>
