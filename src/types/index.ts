@@ -18,6 +18,7 @@ export interface OverlayConfig {
   color: string;
   x: number;
   y: number;
+  thickness?: number; // Optional thickness for line-based overlays
 }
 
 export type OverlayType = 

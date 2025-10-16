@@ -67,6 +67,7 @@ export const Canvas: React.FC<CanvasProps> = ({
       color: overlay.color,
       opacity: overlay.opacity,
       rotation: overlay.rotation,
+      thickness: overlay.thickness,
     };
 
     const handleDragEnd = (e: Konva.KonvaEventObject<DragEvent>) => {

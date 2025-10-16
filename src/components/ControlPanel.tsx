@@ -131,6 +131,25 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     className="color-picker"
                   />
                 </div>
+
+                {/* Thickness slider for minute-grid */}
+                {overlay.id === 'minute-grid' && (
+                  <div className="control-group">
+                    <label className="control-label">
+                      Line Thickness
+                      <span className="control-value">{overlay.thickness || 1}</span>
+                    </label>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="5"
+                      step="0.5"
+                      value={overlay.thickness || 1}
+                      onChange={(e) => onOverlayChange(overlay.id, 'thickness', parseFloat(e.target.value))}
+                      className="slider"
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>

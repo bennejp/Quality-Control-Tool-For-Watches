@@ -35,10 +35,11 @@ const initialOverlays: OverlayConfig[] = [
     enabled: false,
     size: 180,
     rotation: 0,
-    opacity: 0.6,
+    opacity: 1,
     color: '#ec4899',
     x: 400,
     y: 300,
+    thickness: 1,
   },
   {
     id: 'crosshair',
