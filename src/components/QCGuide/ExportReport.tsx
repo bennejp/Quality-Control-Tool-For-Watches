@@ -41,6 +41,7 @@ export const ExportReport: React.FC<ExportReportProps> = ({
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    onExport();
   };
 
   return (
