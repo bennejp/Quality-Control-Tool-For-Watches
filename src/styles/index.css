@@ -914,15 +914,26 @@ body {
 
 .export-report-button {
   width: 100%;
-  padding: 1rem;
-  background: linear-gradient(135deg, #10b981, #059669);
+  padding: 0.85rem;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, opacity 0.2s;
+}
+
+.export-report-button.primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+.export-report-button.secondary {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
 }
 
 .export-report-button:hover {

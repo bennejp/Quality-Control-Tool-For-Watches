@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ChecklistItem } from '../../types';
 
 interface ExportReportProps {
@@ -19,7 +20,9 @@ export const ExportReport: React.FC<ExportReportProps> = ({
   pricePaid,
   albumLinks
 }) => {
-  const handleExportText = () => {
+  const [copied, setCopied] = useState(false);
+
+  const generateReportText = () => {
     const date = new Date().toLocaleString();
     
     let report = `WATCH QC REPORT\n`;
@@ -57,6 +60,25 @@ export const ExportReport: React.FC<ExportReportProps> = ({
       report += `\n`;
     });
 
+    return report;
+  };
+
+  const handleCopyToClipboard = async () => {
+    const report = generateReportText();
+    
+    try {
+      await navigator.clipboard.writeText(report);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      alert('Failed to copy to clipboard. Please try again.');
+    }
+  };
+
+  const handleExportText = () => {
+    const report = generateReportText();
+
     // Create download
     const blob = new Blob([report], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -71,10 +93,19 @@ export const ExportReport: React.FC<ExportReportProps> = ({
 
   return (
     <div className="export-report">
-      <button className="export-report-button" onClick={handleExportText}>
-        Export QC Report
+      <button 
+        className="export-report-button primary" 
+        onClick={handleCopyToClipboard}
+      >
+        {copied ? 'Copied!' : 'Copy QC Report'}
       </button>
-      <p className="export-hint">Export checklist with your notes as a text file</p>
+      <button 
+        className="export-report-button secondary" 
+        onClick={handleExportText}
+      >
+        Download as TXT
+      </button>
+      <p className="export-hint">Copy to paste in forums or download as text file</p>
     </div>
   );
 };
