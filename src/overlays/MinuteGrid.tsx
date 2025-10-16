@@ -56,13 +56,13 @@ export const MinuteGrid: React.FC<MinuteGridProps> = ({ size, color, opacity, ro
     <>
       {lines}
       {circles}
-      {/* Small center dot for precise alignment with watch center */}
+      {/* Tiny black center dot for precise alignment with watch pip */}
       <Circle
         x={0}
         y={0}
-        radius={3}
-        fill={color}
-        opacity={opacity}
+        radius={2.0}
+        fill="#000000"
+        opacity={1}
       />
     </>
   );
