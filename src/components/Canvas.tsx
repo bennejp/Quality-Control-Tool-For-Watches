@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Stage, Layer, Image as KonvaImage, Group, Rect } from 'react-konva';
 import { OverlayConfig } from '../types';
 import { CenterCircle } from '../overlays/CenterCircle';
@@ -16,7 +16,6 @@ interface CanvasProps {
   overlays: OverlayConfig[];
   stageRef: React.RefObject<Konva.Stage>;
   onOverlayPositionChange?: (id: string, x: number, y: number) => void;
-  selectedOverlayId?: string | null;
   onOverlaySelect?: (id: string | null) => void;
 }
 
@@ -27,7 +26,6 @@ export const Canvas: React.FC<CanvasProps> = ({
   overlays,
   stageRef,
   onOverlayPositionChange,
-  selectedOverlayId,
   onOverlaySelect,
 }) => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -87,8 +85,6 @@ export const Canvas: React.FC<CanvasProps> = ({
         onOverlaySelect(overlay.id);
       }
     };
-
-    const isSelected = selectedOverlayId === overlay.id;
 
     const OverlayComponent = (() => {
       switch (overlay.id) {

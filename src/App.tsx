@@ -3,7 +3,14 @@ import { ImageUploader } from './components/ImageUploader';
 import { Canvas } from './components/Canvas';
 import { ControlPanel } from './components/ControlPanel';
 import { ExportButton } from './components/ExportButton';
-import { OverlayConfig } from './types';
+import { TabSwitcher } from './components/QCGuide/TabSwitcher';
+import { QCChecklist } from './components/QCGuide/QCChecklist';
+import { WatchGuideSelector } from './components/QCGuide/WatchGuideSelector';
+import { WatchGuideDetail } from './components/QCGuide/WatchGuideDetail';
+import { ExportReport } from './components/QCGuide/ExportReport';
+import { OverlayConfig, ChecklistItem } from './types';
+import { defaultChecklist } from './data/checklistData';
+import { watchGuides } from './data/watchGuides';
 import Konva from 'konva';
 
 const initialOverlays: OverlayConfig[] = [
@@ -82,6 +89,9 @@ function App() {
   const [imageRotation, setImageRotation] = useState(0);
   const [overlays, setOverlays] = useState<OverlayConfig[]>(initialOverlays);
   const [selectedOverlayId, setSelectedOverlayId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'controls' | 'qc-guide'>('controls');
+  const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(defaultChecklist);
+  const [selectedGuideId, setSelectedGuideId] = useState<string | null>(null);
   const stageRef = useRef<Konva.Stage>(null);
 
   const handleImageUpload = (src: string) => {
@@ -133,6 +143,32 @@ function App() {
 
   const handleOverlaySelect = (id: string | null) => {
     setSelectedOverlayId(id);
+  };
+
+  const handleChecklistToggle = (id: string) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+  };
+
+  const handleChecklistNotesUpdate = (id: string, notes: string) => {
+    setChecklistItems(items =>
+      items.map(item =>
+        item.id === id ? { ...item, userNotes: notes } : item
+      )
+    );
+  };
+
+  const handleUseOverlay = (overlayId: string) => {
+    // Switch to controls tab and enable the overlay
+    setActiveTab('controls');
+    setOverlays(currentOverlays =>
+      currentOverlays.map(overlay =>
+        overlay.id === overlayId ? { ...overlay, enabled: true } : overlay
+      )
+    );
   };
 
   // Handle arrow key movements for selected overlay
@@ -214,27 +250,69 @@ function App() {
 
       <div className="app-container">
         <aside className="sidebar">
-          <div className="sidebar-section">
-            <h2>Upload</h2>
-            <ImageUploader
-              onImageUpload={handleImageUpload}
-              hasImage={!!imageSrc}
-              onClearImage={handleClearImage}
-            />
-          </div>
+          <TabSwitcher activeTab={activeTab} onTabChange={setActiveTab} />
 
-          {imageSrc && (
+          {activeTab === 'controls' ? (
             <>
-              <ControlPanel
-                imageZoom={imageZoom}
-                imageRotation={imageRotation}
-                onImageZoomChange={setImageZoom}
-                onImageRotationChange={setImageRotation}
-                overlays={overlays}
-                onOverlayToggle={handleOverlayToggle}
-                onOverlayChange={handleOverlayChange}
-              />
-              <ExportButton onExport={handleExport} disabled={!imageSrc} />
+              <div className="sidebar-section">
+                <h2>Upload</h2>
+                <ImageUploader
+                  onImageUpload={handleImageUpload}
+                  hasImage={!!imageSrc}
+                  onClearImage={handleClearImage}
+                />
+              </div>
+
+              {imageSrc && (
+                <>
+                  <ControlPanel
+                    imageZoom={imageZoom}
+                    imageRotation={imageRotation}
+                    onImageZoomChange={setImageZoom}
+                    onImageRotationChange={setImageRotation}
+                    overlays={overlays}
+                    onOverlayToggle={handleOverlayToggle}
+                    onOverlayChange={handleOverlayChange}
+                  />
+                  <ExportButton onExport={handleExport} disabled={!imageSrc} />
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="sidebar-section">
+                <WatchGuideSelector
+                  guides={watchGuides}
+                  selectedGuideId={selectedGuideId}
+                  onSelectGuide={setSelectedGuideId}
+                />
+              </div>
+
+              {selectedGuideId && (
+                <div className="sidebar-section">
+                  <WatchGuideDetail
+                    guide={watchGuides.find(g => g.id === selectedGuideId)!}
+                  />
+                </div>
+              )}
+
+              <div className="sidebar-section">
+                <h2>QC Checklist</h2>
+                <QCChecklist
+                  items={checklistItems}
+                  onToggleItem={handleChecklistToggle}
+                  onUpdateNotes={handleChecklistNotesUpdate}
+                  onUseOverlay={handleUseOverlay}
+                />
+              </div>
+
+              <div className="sidebar-section">
+                <ExportReport
+                  checklistItems={checklistItems}
+                  watchModel={selectedGuideId ? watchGuides.find(g => g.id === selectedGuideId)?.model || null : null}
+                  onExport={handleExport}
+                />
+              </div>
             </>
           )}
         </aside>
@@ -247,7 +325,6 @@ function App() {
             overlays={overlays}
             stageRef={stageRef}
             onOverlayPositionChange={handleOverlayPositionChange}
-            selectedOverlayId={selectedOverlayId}
             onOverlaySelect={handleOverlaySelect}
           />
         </main>

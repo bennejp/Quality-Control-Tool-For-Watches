@@ -29,3 +29,26 @@ export type OverlayType =
   | 'date-guide'
   | 'logo-guide';
 
+export interface ChecklistItem {
+  id: string;
+  title: string;
+  description: string;
+  howToCheck: string;
+  recommendedOverlay?: OverlayType;
+  severity: 'critical' | 'important' | 'optional';
+  commonIssues: string[];
+  checked: boolean;
+  userNotes: string;
+}
+
+export interface WatchGuide {
+  id: string;
+  brand: string;
+  model: string;
+  referenceNumber: string;
+  factories: string[];
+  criticalCheckPoints: string[];
+  knownIssues: Record<string, string[]>;
+  tolerances: Record<string, string>;
+}
+
