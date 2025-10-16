@@ -99,6 +99,7 @@ body {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  touch-action: none; /* Prevent default touch behaviors for better control */
 }
 
 .canvas-wrapper {
@@ -106,6 +107,49 @@ body {
   background: var(--bg-tertiary);
   border-radius: 8px;
   box-shadow: 0 4px 16px var(--shadow);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvas-wrapper canvas {
+  touch-action: none;
+}
+
+.canvas-hint {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 212, 255, 0.95);
+  color: var(--bg-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 1000;
+  pointer-events: none;
+  animation: fadeInOut 3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.4);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
 }
 
 /* Upload Area */

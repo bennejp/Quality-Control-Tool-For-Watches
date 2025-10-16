@@ -31,7 +31,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           </label>
           <input
             type="range"
-            min="0.5"
+            min="0.1"
             max="4"
             step="0.1"
             value={imageZoom}

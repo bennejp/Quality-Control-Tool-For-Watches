@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Stage, Layer, Image as KonvaImage, Group, Rect } from 'react-konva';
 import { OverlayConfig } from '../types';
 import { CenterCircle } from '../overlays/CenterCircle';
@@ -30,6 +30,10 @@ export const Canvas: React.FC<CanvasProps> = ({
 }) => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
+  const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
+  const [isDraggingImage, setIsDraggingImage] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const imageGroupRef = useRef<Konva.Group>(null);
 
   useEffect(() => {
     if (imageSrc) {
@@ -37,9 +41,15 @@ export const Canvas: React.FC<CanvasProps> = ({
       img.src = imageSrc;
       img.onload = () => {
         setImage(img);
+        // Center image initially
+        setImagePosition({ x: 0, y: 0 });
+        // Show hint for 3 seconds
+        setShowHint(true);
+        setTimeout(() => setShowHint(false), 3000);
       };
     } else {
       setImage(null);
+      setImagePosition({ x: 0, y: 0 });
     }
   }, [imageSrc]);
 
@@ -59,6 +69,57 @@ export const Canvas: React.FC<CanvasProps> = ({
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Pinch-to-zoom for mobile - MUST be before early return to avoid hooks error
+  useEffect(() => {
+    if (!stageRef.current || !imageSrc) return;
+
+    let lastDist = 0;
+
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      
+      if (e.touches.length === 2 && imageGroupRef.current) {
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        
+        const dist = Math.sqrt(
+          Math.pow(touch2.clientX - touch1.clientX, 2) +
+          Math.pow(touch2.clientY - touch1.clientY, 2)
+        );
+        
+        if (lastDist > 0) {
+          const scale = imageGroupRef.current.scaleX() * (dist / lastDist);
+          
+          // Limit zoom range (0.1 = 10%, 4 = 400%)
+          if (scale >= 0.1 && scale <= 4) {
+            imageGroupRef.current.scale({ x: scale, y: scale });
+          }
+        }
+        
+        lastDist = dist;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      lastDist = 0;
+    };
+
+    try {
+      const stage = stageRef.current.container();
+      if (stage) {
+        stage.addEventListener('touchmove', handleTouchMove, { passive: false });
+        stage.addEventListener('touchend', handleTouchEnd);
+
+        return () => {
+          stage.removeEventListener('touchmove', handleTouchMove);
+          stage.removeEventListener('touchend', handleTouchEnd);
+        };
+      }
+    } catch (error) {
+      console.error('Error setting up touch events:', error);
+    }
+  }, [imageSrc]);
 
   const renderOverlay = (overlay: OverlayConfig) => {
     if (!overlay.enabled) return null;
@@ -146,20 +207,56 @@ export const Canvas: React.FC<CanvasProps> = ({
   const centerX = stageSize.width / 2;
   const centerY = stageSize.height / 2;
 
+  const handleImageDragEnd = (e: Konva.KonvaEventObject<DragEvent>) => {
+    const group = e.currentTarget as Konva.Group;
+    setImagePosition({ x: group.x() - centerX, y: group.y() - centerY });
+    setIsDraggingImage(false);
+  };
+
+  const handleWheel = (e: Konva.KonvaEventObject<WheelEvent>) => {
+    e.evt.preventDefault();
+    
+    if (!imageGroupRef.current) return;
+    
+    const scaleBy = 1.1;
+    const oldScale = imageGroupRef.current.scaleX();
+    
+    const newScale = e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy;
+    
+    // Limit zoom range (0.1 = 10%, 4 = 400%)
+    if (newScale < 0.1 || newScale > 4) return;
+    
+    imageGroupRef.current.scale({ x: newScale, y: newScale });
+  };
+
   return (
     <div className="canvas-wrapper">
-      <Stage width={stageSize.width} height={stageSize.height} ref={stageRef}>
+      {showHint && (
+        <div className="canvas-hint">
+          <span>💡 Drag image to move • Scroll or pinch to zoom</span>
+        </div>
+      )}
+      <Stage 
+        width={stageSize.width} 
+        height={stageSize.height} 
+        ref={stageRef}
+        onWheel={handleWheel}
+      >
         <Layer>
-          {/* Image Layer */}
+          {/* Image Layer - Draggable and Scalable */}
           {image && (
             <Group
-              x={centerX}
-              y={centerY}
+              ref={imageGroupRef}
+              x={centerX + imagePosition.x}
+              y={centerY + imagePosition.y}
               offsetX={0}
               offsetY={0}
               rotation={imageRotation}
               scaleX={imageZoom}
               scaleY={imageZoom}
+              draggable={true}
+              onDragStart={() => setIsDraggingImage(true)}
+              onDragEnd={handleImageDragEnd}
             >
               <KonvaImage
                 image={image}
@@ -168,6 +265,20 @@ export const Canvas: React.FC<CanvasProps> = ({
                 width={image.width}
                 height={image.height}
               />
+              
+              {/* Visual indicator when dragging */}
+              {isDraggingImage && (
+                <Rect
+                  x={-image.width / 2}
+                  y={-image.height / 2}
+                  width={image.width}
+                  height={image.height}
+                  stroke="#00d4ff"
+                  strokeWidth={3}
+                  dash={[10, 5]}
+                  listening={false}
+                />
+              )}
             </Group>
           )}
 
