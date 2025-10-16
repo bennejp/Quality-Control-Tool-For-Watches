@@ -49,10 +49,10 @@ export const ExportReport: React.FC<ExportReportProps> = ({
       report += `\n`;
     }
 
-    checklistItems.forEach(item => {
-      report += `${item.checked ? '✓' : '☐'} ${item.title}\n`;
+    checklistItems.forEach((item, index) => {
+      report += `${index + 1}. ${item.title}\n`;
       if (item.userNotes) {
-        report += `   Notes: ${item.userNotes}\n`;
+        report += `   ${item.userNotes}\n`;
       }
       report += `\n`;
     });

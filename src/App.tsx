@@ -13,6 +13,9 @@ import { defaultChecklist } from './data/checklistData';
 import { watchGuides } from './data/watchGuides';
 import Konva from 'konva';
 
+// Feature Flags - Set to true to enable features
+const ENABLE_WATCH_GUIDE_SELECTOR = false; // Change to true to enable watch model selection
+
 const initialOverlays: OverlayConfig[] = [
   {
     id: 'center-circle',
@@ -261,7 +264,7 @@ function App() {
       <header className="app-header">
         <div>
           <h1>QC Tool for Watches</h1>
-          <div className="subtitle">TOOL TO DETECT SHITTERS</div>
+          <div className="subtitle">Quality control made easy</div>
         </div>
       </header>
 
@@ -298,20 +301,24 @@ function App() {
             </>
           ) : (
             <>
-              <div className="sidebar-section">
-                <WatchGuideSelector
-                  guides={watchGuides}
-                  selectedGuideId={selectedGuideId}
-                  onSelectGuide={setSelectedGuideId}
-                />
-              </div>
+              {ENABLE_WATCH_GUIDE_SELECTOR && (
+                <>
+                  <div className="sidebar-section">
+                    <WatchGuideSelector
+                      guides={watchGuides}
+                      selectedGuideId={selectedGuideId}
+                      onSelectGuide={setSelectedGuideId}
+                    />
+                  </div>
 
-              {selectedGuideId && (
-                <div className="sidebar-section">
-                  <WatchGuideDetail
-                    guide={watchGuides.find(g => g.id === selectedGuideId)!}
-                  />
-                </div>
+                  {selectedGuideId && (
+                    <div className="sidebar-section">
+                      <WatchGuideDetail
+                        guide={watchGuides.find(g => g.id === selectedGuideId)!}
+                      />
+                    </div>
+                  )}
+                </>
               )}
 
               <div className="sidebar-section">
@@ -337,7 +344,7 @@ function App() {
               <div className="sidebar-section">
                 <ExportReport
                   checklistItems={checklistItems}
-                  watchModel={selectedGuideId ? watchGuides.find(g => g.id === selectedGuideId)?.model || null : null}
+                  watchModel={ENABLE_WATCH_GUIDE_SELECTOR && selectedGuideId ? watchGuides.find(g => g.id === selectedGuideId)?.model || null : null}
                   dealerName={dealerName}
                   factoryName={factoryName}
                   modelName={modelName}

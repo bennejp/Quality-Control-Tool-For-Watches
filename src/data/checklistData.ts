@@ -108,7 +108,7 @@ export const defaultChecklist: ChecklistItem[] = [
   },
   {
     id: 'overall-quality',
-    title: 'Overall Build Quality',
+    title: 'Other Notes',
     description: 'General assessment of finishing, case quality, and overall craftsmanship. Note anything that you bothered with.',
     howToCheck: 'Look for scratches, dents, fingerprints, dust under crystal, rough edges, poor polishing, or any other quality issues.',
     severity: 'important',
