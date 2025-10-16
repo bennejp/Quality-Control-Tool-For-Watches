@@ -5,15 +5,15 @@
 }
 
 :root {
-  --bg-primary: #0f1419;
-  --bg-secondary: #1a1f2e;
-  --bg-tertiary: #252b3b;
+  --bg-primary: #0a0e14;
+  --bg-secondary: #16191f;
+  --bg-tertiary: #1e2228;
   --text-primary: #ffffff;
-  --text-secondary: #b4b9c5;
-  --accent-primary: #ec4899;
-  --accent-secondary: #8b5cf6;
-  --border-color: #2d3548;
-  --shadow: rgba(0, 0, 0, 0.3);
+  --text-secondary: #a8adb7;
+  --accent-primary: #00a651;
+  --accent-secondary: #00d978;
+  --border-color: #2a2e36;
+  --shadow: rgba(0, 0, 0, 0.4);
 }
 
 body {
