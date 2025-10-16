@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { Stage, Layer, Image as KonvaImage, Group } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Group, Rect } from 'react-konva';
 import { OverlayConfig } from '../types';
 import { CenterCircle } from '../overlays/CenterCircle';
 import { HourGrid } from '../overlays/HourGrid';
@@ -96,6 +96,9 @@ export const Canvas: React.FC<CanvasProps> = ({
       }
     })();
 
+    // Calculate hitbox size - make it larger than the overlay for easier dragging
+    const hitboxSize = overlay.size * 2.5;
+
     return (
       <Group
         key={overlay.id}
@@ -104,6 +107,16 @@ export const Canvas: React.FC<CanvasProps> = ({
         x={overlay.x}
         y={overlay.y}
       >
+        {/* Invisible hitbox for easier dragging */}
+        <Rect
+          x={-hitboxSize / 2}
+          y={-hitboxSize / 2}
+          width={hitboxSize}
+          height={hitboxSize}
+          fill="transparent"
+          opacity={0}
+          listening={true}
+        />
         {OverlayComponent}
       </Group>
     );
