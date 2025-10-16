@@ -19,6 +19,25 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   onOverlayToggle,
   onOverlayChange,
 }) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    currentValue: number,
+    min: number,
+    max: number,
+    step: number,
+    onChange: (value: number) => void
+  ) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const newValue = Math.max(min, currentValue - step);
+      onChange(newValue);
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const newValue = Math.min(max, currentValue + step);
+      onChange(newValue);
+    }
+  };
+
   return (
     <>
       <div className="sidebar-section">
@@ -36,6 +55,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             step="0.1"
             value={imageZoom}
             onChange={(e) => onImageZoomChange(parseFloat(e.target.value))}
+            onKeyDown={(e) => handleKeyDown(e, imageZoom, 0.1, 4, 0.1, onImageZoomChange)}
             className="slider"
           />
         </div>
@@ -52,6 +72,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             step="1"
             value={imageRotation}
             onChange={(e) => onImageRotationChange(parseInt(e.target.value))}
+            onKeyDown={(e) => handleKeyDown(e, imageRotation, -180, 180, 1, onImageRotationChange)}
             className="slider"
           />
         </div>
@@ -79,15 +100,16 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     Size
                     <span className="control-value">{overlay.size}</span>
                   </label>
-                  <input
-                    type="range"
-                    min="50"
-                    max="500"
-                    step="5"
-                    value={overlay.size}
-                    onChange={(e) => onOverlayChange(overlay.id, 'size', parseInt(e.target.value))}
-                    className="slider"
-                  />
+                    <input
+                      type="range"
+                      min="50"
+                      max="500"
+                      step="5"
+                      value={overlay.size}
+                      onChange={(e) => onOverlayChange(overlay.id, 'size', parseInt(e.target.value))}
+                      onKeyDown={(e) => handleKeyDown(e, overlay.size, 50, 500, 5, (val) => onOverlayChange(overlay.id, 'size', val))}
+                      className="slider"
+                    />
                 </div>
 
                 <div className="control-group">
@@ -95,15 +117,16 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     Rotation
                     <span className="control-value">{overlay.rotation}°</span>
                   </label>
-                  <input
-                    type="range"
-                    min="-180"
-                    max="180"
-                    step="1"
-                    value={overlay.rotation}
-                    onChange={(e) => onOverlayChange(overlay.id, 'rotation', parseInt(e.target.value))}
-                    className="slider"
-                  />
+                    <input
+                      type="range"
+                      min="-180"
+                      max="180"
+                      step="1"
+                      value={overlay.rotation}
+                      onChange={(e) => onOverlayChange(overlay.id, 'rotation', parseInt(e.target.value))}
+                      onKeyDown={(e) => handleKeyDown(e, overlay.rotation, -180, 180, 1, (val) => onOverlayChange(overlay.id, 'rotation', val))}
+                      className="slider"
+                    />
                 </div>
 
                 <div className="control-group">
@@ -111,15 +134,16 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     Opacity
                     <span className="control-value">{Math.round(overlay.opacity * 100)}%</span>
                   </label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={overlay.opacity}
-                    onChange={(e) => onOverlayChange(overlay.id, 'opacity', parseFloat(e.target.value))}
-                    className="slider"
-                  />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={overlay.opacity}
+                      onChange={(e) => onOverlayChange(overlay.id, 'opacity', parseFloat(e.target.value))}
+                      onKeyDown={(e) => handleKeyDown(e, overlay.opacity, 0, 1, 0.05, (val) => onOverlayChange(overlay.id, 'opacity', val))}
+                      className="slider"
+                    />
                 </div>
 
                 <div className="control-group">
@@ -146,6 +170,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                       step="0.5"
                       value={overlay.thickness || 1}
                       onChange={(e) => onOverlayChange(overlay.id, 'thickness', parseFloat(e.target.value))}
+                      onKeyDown={(e) => handleKeyDown(e, overlay.thickness || 1, 0.5, 5, 0.5, (val) => onOverlayChange(overlay.id, 'thickness', val))}
                       className="slider"
                     />
                   </div>

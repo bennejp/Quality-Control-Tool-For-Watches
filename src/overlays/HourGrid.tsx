@@ -51,6 +51,13 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
     <>
       {lines}
       {circles}
+      <Circle
+        x={0}
+        y={0}
+        radius={2.0}
+        fill="#000000"
+        opacity={1}
+      />
     </>
   );
 };

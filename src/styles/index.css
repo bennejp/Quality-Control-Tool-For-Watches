@@ -220,6 +220,12 @@ body {
   border-radius: 3px;
   outline: none;
   -webkit-appearance: none;
+  transition: all 0.2s;
+}
+
+.slider:focus {
+  height: 8px;
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.3);
 }
 
 .slider::-webkit-slider-thumb {
