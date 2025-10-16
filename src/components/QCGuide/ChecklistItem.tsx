@@ -16,15 +16,6 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical': return '#ff4444';
-      case 'important': return '#ff8800';
-      case 'optional': return '#888888';
-      default: return '#888888';
-    }
-  };
-
   return (
     <div className="checklist-item">
       <div className="checklist-header" onClick={() => setIsExpanded(!isExpanded)}>
@@ -35,17 +26,10 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
             e.stopPropagation();
             onToggle(item.id);
           }}
+          onClick={(e) => e.stopPropagation()}
           className="checklist-checkbox"
         />
-        <div className="checklist-title-wrapper">
-          <span className="checklist-title">{item.title}</span>
-          <span 
-            className="severity-badge" 
-            style={{ backgroundColor: getSeverityColor(item.severity) }}
-          >
-            {item.severity}
-          </span>
-        </div>
+        <span className="checklist-title">{item.title}</span>
         <span className="expand-icon">{isExpanded ? '▼' : '▶'}</span>
       </div>
 
@@ -66,7 +50,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
               className="use-overlay-button"
               onClick={() => onUseOverlay(item.recommendedOverlay!)}
             >
-              📐 Use Recommended Overlay
+              Use Recommended Overlay
             </button>
           )}
 

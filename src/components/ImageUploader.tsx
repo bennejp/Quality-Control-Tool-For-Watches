@@ -38,11 +38,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, has
         style={{ display: 'none' }}
       />
       <button className="upload-button" onClick={handleClick}>
-        📷 {hasImage ? 'Change Image' : 'Upload Watch Photo'}
+        {hasImage ? 'Change Image' : 'Upload Watch Photo'}
       </button>
       {hasImage && (
         <button className="upload-button secondary" onClick={onClearImage}>
-          🗑️ Clear Image
+          Clear Image
         </button>
       )}
     </div>

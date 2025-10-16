@@ -11,7 +11,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ onExport, disabled }
         onClick={onExport}
         disabled={disabled}
       >
-        💾 Export as PNG
+         Export as PNG
       </button>
     </div>
   );

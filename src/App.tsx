@@ -254,7 +254,6 @@ function App() {
   return (
     <div>
       <header className="app-header">
-        <div className="watch-icon">⌚</div>
         <div>
           <h1>QC Tool for Watches</h1>
           <div className="subtitle">TOOL TO DETECT SHITTERS</div>

@@ -13,6 +13,8 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
   const circles = [];
 
   for (let i = 0; i < hours; i++) {
+
+    
     const angle = (i * 360 / hours + rotation) * Math.PI / 180;
     
     // Start from center (0, 0 since we're inside a positioned Group)

@@ -89,8 +89,10 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <input
                 type="checkbox"
                 checked={overlay.enabled}
-                onChange={() => {}}
-                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  onOverlayToggle(overlay.id);
+                }}
               />
               <label>{overlay.name}</label>
               <button
@@ -104,7 +106,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 title="Bring to front"
                 disabled={!overlay.enabled}
               >
-                ⬆️
+                ↑
               </button>
             </div>
             
