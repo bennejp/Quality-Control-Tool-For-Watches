@@ -24,6 +24,7 @@ const initialOverlays: OverlayConfig[] = [
     color: '#00d4ff',
     x: 400,
     y: 300,
+    zIndex: 0,
   },
   {
     id: 'hour-grid',
@@ -35,6 +36,7 @@ const initialOverlays: OverlayConfig[] = [
     color: '#00d4ff',
     x: 400,
     y: 300,
+    zIndex: 1,
   },
   {
     id: 'minute-grid',
@@ -47,6 +49,7 @@ const initialOverlays: OverlayConfig[] = [
     x: 400,
     y: 300,
     thickness: 1,
+    zIndex: 2,
   },
   {
     id: 'crosshair',
@@ -58,6 +61,7 @@ const initialOverlays: OverlayConfig[] = [
     color: '#00d4ff',
     x: 400,
     y: 300,
+    zIndex: 3,
   },
   {
     id: 'date-guide',
@@ -69,6 +73,7 @@ const initialOverlays: OverlayConfig[] = [
     color: '#00d4ff',
     x: 520,
     y: 300,
+    zIndex: 4,
   },
   {
     id: 'logo-guide',
@@ -80,6 +85,7 @@ const initialOverlays: OverlayConfig[] = [
     color: '#00d4ff',
     x: 400,
     y: 300,
+    zIndex: 5,
   },
 ];
 
@@ -169,6 +175,13 @@ function App() {
         overlay.id === overlayId ? { ...overlay, enabled: true } : overlay
       )
     );
+  };
+
+  const handleBringToFront = (id: string) => {
+    const maxZIndex = Math.max(...overlays.map(o => o.zIndex || 0));
+    setOverlays(overlays.map(overlay =>
+      overlay.id === id ? { ...overlay, zIndex: maxZIndex + 1 } : overlay
+    ));
   };
 
   // Handle arrow key movements for selected overlay
@@ -265,15 +278,16 @@ function App() {
 
               {imageSrc && (
                 <>
-                  <ControlPanel
-                    imageZoom={imageZoom}
-                    imageRotation={imageRotation}
-                    onImageZoomChange={setImageZoom}
-                    onImageRotationChange={setImageRotation}
-                    overlays={overlays}
-                    onOverlayToggle={handleOverlayToggle}
-                    onOverlayChange={handleOverlayChange}
-                  />
+              <ControlPanel
+                imageZoom={imageZoom}
+                imageRotation={imageRotation}
+                onImageZoomChange={setImageZoom}
+                onImageRotationChange={setImageRotation}
+                overlays={overlays}
+                onOverlayToggle={handleOverlayToggle}
+                onOverlayChange={handleOverlayChange}
+                onBringToFront={handleBringToFront}
+              />
                   <ExportButton onExport={handleExport} disabled={!imageSrc} />
                 </>
               )}

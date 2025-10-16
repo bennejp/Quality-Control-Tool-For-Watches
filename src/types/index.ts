@@ -19,6 +19,7 @@ export interface OverlayConfig {
   x: number;
   y: number;
   thickness?: number; // Optional thickness for line-based overlays
+  zIndex?: number; // For overlay ordering
 }
 
 export type OverlayType = 

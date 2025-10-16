@@ -282,8 +282,10 @@ export const Canvas: React.FC<CanvasProps> = ({
             </Group>
           )}
 
-          {/* Overlay Layer */}
-          {overlays.map(renderOverlay)}
+          {/* Overlay Layer - Sorted by zIndex */}
+          {[...overlays]
+            .sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0))
+            .map(renderOverlay)}
         </Layer>
       </Stage>
     </div>

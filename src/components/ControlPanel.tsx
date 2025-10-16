@@ -8,6 +8,7 @@ interface ControlPanelProps {
   overlays: OverlayConfig[];
   onOverlayToggle: (id: string) => void;
   onOverlayChange: (id: string, property: keyof OverlayConfig, value: number | string) => void;
+  onBringToFront: (id: string) => void;
 }
 
 export const ControlPanel: React.FC<ControlPanelProps> = ({
@@ -18,6 +19,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   overlays,
   onOverlayToggle,
   onOverlayChange,
+  onBringToFront,
 }) => {
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -91,6 +93,19 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 onClick={(e) => e.stopPropagation()}
               />
               <label>{overlay.name}</label>
+              <button
+                className={`bring-to-front-btn ${overlay.enabled ? 'visible' : 'hidden'}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (overlay.enabled) {
+                    onBringToFront(overlay.id);
+                  }
+                }}
+                title="Bring to front"
+                disabled={!overlay.enabled}
+              >
+                ⬆️
+              </button>
             </div>
             
             {overlay.enabled && (
@@ -115,16 +130,30 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 <div className="control-group">
                   <label className="control-label">
                     Rotation
-                    <span className="control-value">{overlay.rotation}°</span>
+                    <input
+                      type="number"
+                      className="control-value-input"
+                      value={overlay.rotation.toFixed(1)}
+                      onChange={(e) => {
+                        const val = parseFloat(e.target.value);
+                        if (!isNaN(val) && val >= -180 && val <= 180) {
+                          onOverlayChange(overlay.id, 'rotation', val);
+                        }
+                      }}
+                      step="0.1"
+                      min="-180"
+                      max="180"
+                    />
+                    <span className="control-unit">°</span>
                   </label>
                     <input
                       type="range"
                       min="-180"
                       max="180"
-                      step="1"
+                      step="0.1"
                       value={overlay.rotation}
-                      onChange={(e) => onOverlayChange(overlay.id, 'rotation', parseInt(e.target.value))}
-                      onKeyDown={(e) => handleKeyDown(e, overlay.rotation, -180, 180, 1, (val) => onOverlayChange(overlay.id, 'rotation', val))}
+                      onChange={(e) => onOverlayChange(overlay.id, 'rotation', parseFloat(e.target.value))}
+                      onKeyDown={(e) => handleKeyDown(e, overlay.rotation, -180, 180, 0.1, (val) => onOverlayChange(overlay.id, 'rotation', val))}
                       className="slider"
                     />
                 </div>
