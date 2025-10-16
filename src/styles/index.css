@@ -549,6 +549,54 @@ body {
   margin-bottom: 1rem;
 }
 
+.qc-details-form {
+  background: var(--bg-tertiary);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.qc-details-form h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.form-field {
+  margin-bottom: 0.75rem;
+}
+
+.form-field:last-child {
+  margin-bottom: 0;
+}
+
+.form-field label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.form-field input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
 .progress-text {
   font-size: 0.875rem;
   color: var(--text-secondary);

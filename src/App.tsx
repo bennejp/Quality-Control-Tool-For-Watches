@@ -98,6 +98,11 @@ function App() {
   const [activeTab, setActiveTab] = useState<'controls' | 'qc-guide'>('controls');
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(defaultChecklist);
   const [selectedGuideId, setSelectedGuideId] = useState<string | null>(null);
+  const [dealerName, setDealerName] = useState('');
+  const [factoryName, setFactoryName] = useState('');
+  const [modelName, setModelName] = useState('');
+  const [pricePaid, setPricePaid] = useState('');
+  const [albumLinks, setAlbumLinks] = useState('');
   const stageRef = useRef<Konva.Stage>(null);
 
   const handleImageUpload = (src: string) => {
@@ -316,6 +321,16 @@ function App() {
                   onToggleItem={handleChecklistToggle}
                   onUpdateNotes={handleChecklistNotesUpdate}
                   onUseOverlay={handleUseOverlay}
+                  dealerName={dealerName}
+                  factoryName={factoryName}
+                  modelName={modelName}
+                  pricePaid={pricePaid}
+                  albumLinks={albumLinks}
+                  onDealerNameChange={setDealerName}
+                  onFactoryNameChange={setFactoryName}
+                  onModelNameChange={setModelName}
+                  onPricePaidChange={setPricePaid}
+                  onAlbumLinksChange={setAlbumLinks}
                 />
               </div>
 
@@ -323,6 +338,11 @@ function App() {
                 <ExportReport
                   checklistItems={checklistItems}
                   watchModel={selectedGuideId ? watchGuides.find(g => g.id === selectedGuideId)?.model || null : null}
+                  dealerName={dealerName}
+                  factoryName={factoryName}
+                  modelName={modelName}
+                  pricePaid={pricePaid}
+                  albumLinks={albumLinks}
                 />
               </div>
             </>

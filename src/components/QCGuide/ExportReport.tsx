@@ -3,11 +3,21 @@ import { ChecklistItem } from '../../types';
 interface ExportReportProps {
   checklistItems: ChecklistItem[];
   watchModel: string | null;
+  dealerName: string;
+  factoryName: string;
+  modelName: string;
+  pricePaid: string;
+  albumLinks: string;
 }
 
 export const ExportReport: React.FC<ExportReportProps> = ({
   checklistItems,
-  watchModel
+  watchModel,
+  dealerName,
+  factoryName,
+  modelName,
+  pricePaid,
+  albumLinks
 }) => {
   const handleExportText = () => {
     const date = new Date().toLocaleString();
@@ -18,6 +28,26 @@ export const ExportReport: React.FC<ExportReportProps> = ({
       report += `Model: ${watchModel}\n`;
     }
     report += `\n`;
+
+    // Add optional details if provided
+    if (dealerName || factoryName || modelName || pricePaid || albumLinks) {
+      if (dealerName) {
+        report += `Dealer name: ${dealerName}\n`;
+      }
+      if (factoryName) {
+        report += `Factory name: ${factoryName}\n`;
+      }
+      if (modelName) {
+        report += `Model name (& version number): ${modelName}\n`;
+      }
+      if (pricePaid) {
+        report += `Price Paid: ${pricePaid}\n`;
+      }
+      if (albumLinks) {
+        report += `Album Links: ${albumLinks}\n`;
+      }
+      report += `\n`;
+    }
 
     checklistItems.forEach(item => {
       report += `${item.checked ? '✓' : '☐'} ${item.title}\n`;
