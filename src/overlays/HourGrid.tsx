@@ -11,17 +11,17 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
   const hours = 12;
   const lines = [];
   const circles = [];
+  const strokeWidth = 2;
 
   for (let i = 0; i < hours; i++) {
-
-    
     const angle = (i * 360 / hours + rotation) * Math.PI / 180;
     
-    // Start from center (0, 0 since we're inside a positioned Group)
-    const x1 = 0;
-    const y1 = 0;
+    // Start from a small inner radius to create a clear center
+    const innerRadius = Math.max(strokeWidth * 3, 10); // Scale with thickness, minimum 10px
+    const x1 = Math.cos(angle) * innerRadius;
+    const y1 = Math.sin(angle) * innerRadius;
     
-    // End at the radius
+    // End at the outer radius
     const x2 = Math.cos(angle) * size;
     const y2 = Math.sin(angle) * size;
 
@@ -30,7 +30,7 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
         key={`hour-line-${i}`}
         points={[x1, y1, x2, y2]}
         stroke={color}
-        strokeWidth={2}
+        strokeWidth={strokeWidth}
         opacity={opacity}
       />
     );
@@ -43,7 +43,7 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
         y={y2}
         radius={8}
         stroke={color}
-        strokeWidth={2}
+        strokeWidth={strokeWidth}
         opacity={opacity}
       />
     );
@@ -53,6 +53,7 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
     <>
       {lines}
       {circles}
+      {/* Tiny black center dot for precise alignment with watch pip */}
       <Circle
         x={0}
         y={0}

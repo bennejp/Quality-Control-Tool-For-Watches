@@ -5,7 +5,7 @@ export const defaultChecklist: ChecklistItem[] = [
     id: 'index-alignment',
     title: 'Index Alignment',
     description: 'Check if all hour markers are properly aligned and evenly spaced around the dial.',
-    howToCheck: 'Use the Minute Grid (60 markers) overlay to verify each hour marker aligns with the radial lines. Look for any markers that appear tilted, off-center, or misaligned.',
+    howToCheck: 'Use the Hour Grid overlay to verify each hour marker aligns with the radial lines. Look for any markers that appear tilted, off-center, or misaligned.',
     recommendedOverlay: 'minute-grid',
     severity: 'critical',
     commonIssues: [
