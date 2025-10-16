@@ -106,6 +106,7 @@ function App() {
   const [modelName, setModelName] = useState('');
   const [pricePaid, setPricePaid] = useState('');
   const [albumLinks, setAlbumLinks] = useState('');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const stageRef = useRef<Konva.Stage>(null);
 
   const handleImageUpload = (src: string) => {
@@ -268,8 +269,16 @@ function App() {
         </div>
       </header>
 
-      <div className="app-container">
-        <aside className="sidebar">
+      <div className={`app-container ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <button 
+          className="sidebar-toggle"
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          aria-label={sidebarCollapsed ? 'Show controls' : 'Hide controls'}
+        >
+          {sidebarCollapsed ? '☰' : '×'}
+        </button>
+        
+        <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
           <TabSwitcher activeTab={activeTab} onTabChange={setActiveTab} />
 
           {activeTab === 'controls' ? (
