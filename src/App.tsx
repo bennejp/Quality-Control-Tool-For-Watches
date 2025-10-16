@@ -208,7 +208,7 @@ function App() {
         <div className="watch-icon">⌚</div>
         <div>
           <h1>QC Tool for Watches</h1>
-          <div className="subtitle">Professional Watch Quality Control Overlay Analysis</div>
+          <div className="subtitle">TOOL TO DETECT SHITTERS</div>
         </div>
       </header>
 

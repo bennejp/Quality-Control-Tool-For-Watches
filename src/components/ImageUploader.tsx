@@ -19,6 +19,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, has
         }
       };
       reader.readAsDataURL(file);
+      // Reset input value to allow selecting the same file again
+      e.target.value = '';
     }
   };
 
