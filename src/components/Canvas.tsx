@@ -16,6 +16,8 @@ interface CanvasProps {
   overlays: OverlayConfig[];
   stageRef: React.RefObject<Konva.Stage>;
   onOverlayPositionChange?: (id: string, x: number, y: number) => void;
+  selectedOverlayId?: string | null;
+  onOverlaySelect?: (id: string | null) => void;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
@@ -25,6 +27,8 @@ export const Canvas: React.FC<CanvasProps> = ({
   overlays,
   stageRef,
   onOverlayPositionChange,
+  selectedOverlayId,
+  onOverlaySelect,
 }) => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
@@ -78,6 +82,14 @@ export const Canvas: React.FC<CanvasProps> = ({
       }
     };
 
+    const handleClick = () => {
+      if (onOverlaySelect) {
+        onOverlaySelect(overlay.id);
+      }
+    };
+
+    const isSelected = selectedOverlayId === overlay.id;
+
     const OverlayComponent = (() => {
       switch (overlay.id) {
         case 'center-circle':
@@ -105,6 +117,8 @@ export const Canvas: React.FC<CanvasProps> = ({
         key={overlay.id}
         draggable
         onDragEnd={handleDragEnd}
+        onClick={handleClick}
+        onTap={handleClick}
         x={overlay.x}
         y={overlay.y}
       >

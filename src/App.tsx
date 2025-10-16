@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ImageUploader } from './components/ImageUploader';
 import { Canvas } from './components/Canvas';
 import { ControlPanel } from './components/ControlPanel';
@@ -81,6 +81,7 @@ function App() {
   const [imageZoom, setImageZoom] = useState(1);
   const [imageRotation, setImageRotation] = useState(0);
   const [overlays, setOverlays] = useState<OverlayConfig[]>(initialOverlays);
+  const [selectedOverlayId, setSelectedOverlayId] = useState<string | null>(null);
   const stageRef = useRef<Konva.Stage>(null);
 
   const handleImageUpload = (src: string) => {
@@ -129,6 +130,60 @@ function App() {
       overlay.id === id ? { ...overlay, x, y } : overlay
     ));
   };
+
+  const handleOverlaySelect = (id: string | null) => {
+    setSelectedOverlayId(id);
+  };
+
+  // Handle arrow key movements for selected overlay
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!selectedOverlayId) return;
+
+      const moveAmount = e.shiftKey ? 10 : 1; // Hold Shift for faster movement
+
+      switch (e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          setOverlays(currentOverlays =>
+            currentOverlays.map(overlay =>
+              overlay.id === selectedOverlayId ? { ...overlay, y: overlay.y - moveAmount } : overlay
+            )
+          );
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          setOverlays(currentOverlays =>
+            currentOverlays.map(overlay =>
+              overlay.id === selectedOverlayId ? { ...overlay, y: overlay.y + moveAmount } : overlay
+            )
+          );
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          setOverlays(currentOverlays =>
+            currentOverlays.map(overlay =>
+              overlay.id === selectedOverlayId ? { ...overlay, x: overlay.x - moveAmount } : overlay
+            )
+          );
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          setOverlays(currentOverlays =>
+            currentOverlays.map(overlay =>
+              overlay.id === selectedOverlayId ? { ...overlay, x: overlay.x + moveAmount } : overlay
+            )
+          );
+          break;
+        case 'Escape':
+          setSelectedOverlayId(null);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedOverlayId]);
 
   const handleExport = () => {
     if (stageRef.current) {
@@ -192,6 +247,8 @@ function App() {
             overlays={overlays}
             stageRef={stageRef}
             onOverlayPositionChange={handleOverlayPositionChange}
+            selectedOverlayId={selectedOverlayId}
+            onOverlaySelect={handleOverlaySelect}
           />
         </main>
       </div>
