@@ -187,8 +187,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   />
                 </div>
 
-                {/* Thickness slider for minute-grid */}
-                {overlay.id === 'minute-grid' && (
+                {/* Thickness slider for overlays that support it */}
+                {(overlay.id === 'minute-grid' || overlay.id === 'hour-grid' || overlay.id === 'crosshair' || overlay.id === 'logo-guide') && (
                   <div className="control-group">
                     <label className="control-label">
                       Line Thickness

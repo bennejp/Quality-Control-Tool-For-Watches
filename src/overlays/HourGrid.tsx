@@ -5,13 +5,14 @@ interface HourGridProps {
   color: string;
   opacity: number;
   rotation: number;
+  thickness?: number;
 }
 
-export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotation }) => {
+export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotation, thickness = 1 }) => {
   const hours = 12;
   const lines = [];
   const circles = [];
-  const strokeWidth = 2;
+  const strokeWidth = 2 * thickness;
 
   for (let i = 0; i < hours; i++) {
     const angle = (i * 360 / hours + rotation) * Math.PI / 180;

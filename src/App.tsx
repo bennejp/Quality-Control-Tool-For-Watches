@@ -40,6 +40,7 @@ const initialOverlays: OverlayConfig[] = [
     x: 400,
     y: 300,
     zIndex: 1,
+    thickness: 1,
   },
   {
     id: 'minute-grid',
@@ -65,6 +66,7 @@ const initialOverlays: OverlayConfig[] = [
     x: 400,
     y: 300,
     zIndex: 3,
+    thickness: 1,
   },
   {
     id: 'date-guide',
@@ -89,6 +91,7 @@ const initialOverlays: OverlayConfig[] = [
     x: 400,
     y: 300,
     zIndex: 5,
+    thickness: 1,
   },
 ];
 
