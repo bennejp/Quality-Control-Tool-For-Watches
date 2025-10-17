@@ -1,18 +1,12 @@
 # Watch QC Tool
 
-A browser-based quality control tool for watch enthusiasts. Upload watch photos, apply precision overlays, and systematically document your observations with a built-in checklist system.
-
-## About
-
-This tool was created to help watch collectors and enthusiasts perform thorough quality control inspections. Whether you're examining alignment, checking dial printing, or verifying bezel positioning, this tool provides the overlays and structure you need to conduct a complete QC inspection.
-
-All processing happens entirely in your browser. Your photos never leave your device, and no account or login is required.
+A browser-based quality control tool for watch enthusiasts. Upload watch photos, apply precision overlays, and systematically document your observations with a built-in checklist system. All processing happens entirely in your browser. Your photos never leave your device, and no account or login is required.
 
 ## Features
 
 ### Precision Overlay System
-- Multiple overlay types: Hour Grid, Minute Grid (60 markers), Crosshair, Date Window Guide, and more
-- Independent controls for each overlay: position, size, rotation, opacity, and line thickness
+- Multiple overlay types: Hour Grid, Minute Grid, Crosshair, Date Window Guide, and more
+- Independent controls for each overlay: position, size, rotation, and opacity
 - Drag overlays with mouse or use arrow keys for pixel-perfect positioning
 - Layer management with "bring to front" functionality for multiple overlays
 - Default cyan overlay color optimized for visibility
@@ -59,16 +53,7 @@ npm install
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
-
-### Build for Production
-
-To create a production build:
-```bash
-npm run build
-```
-
-The built files will be in the `dist` directory.
+4. Open your browser and navigate to localhost site
 
 ## Usage
 
@@ -90,8 +75,7 @@ The built files will be in the `dist` directory.
 ### Tips for Best Results
 
 - Use top-down photos for most accurate overlay alignment
-- Start with the center alignment overlays (Crosshair or Center Circles) to establish your reference point
-- Adjust overlay opacity if you need to see the watch details more clearly
+- Adjust overlay opacity if needed
 - Use the "Bring to Front" button when working with multiple overlays
 - On mobile, collapse the sidebar for full-screen analysis
 
@@ -100,16 +84,8 @@ The built files will be in the `dist` directory.
 - React 18
 - TypeScript
 - Vite
-- Konva (canvas manipulation)
+- Konva (canvas)
 - React Konva (React bindings for Konva)
-
-## Feature Toggles
-
-The project includes feature flags that can be easily enabled or disabled. See `src/App.tsx`:
-
-```typescript
-const ENABLE_WATCH_GUIDE_SELECTOR = false; // Set to true to enable watch model guides
-```
 
 ## Project Structure
 
@@ -129,19 +105,10 @@ src/
 ├── data/               # Static data
 │   ├── checklistData.ts
 │   └── watchGuides.ts
-├── types/              # TypeScript type definitions
+├── types/              # Type definitions
 ├── styles/             # CSS styling
 └── App.tsx            # Main application component
 ```
-
-## Browser Compatibility
-
-- Chrome/Edge (recommended)
-- Firefox
-- Safari
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-Modern browsers with ES2020+ support required.
 
 ## Deployment
 
@@ -151,8 +118,6 @@ To deploy:
 1. Push to the main branch
 2. GitHub Actions will automatically build and deploy to GitHub Pages
 
-Alternatively, you can deploy to any static hosting service (Netlify, Vercel, etc.) by building and uploading the `dist` folder.
-
 ## Privacy
 
 All image processing and overlay manipulation happens entirely in your browser using client-side JavaScript. No images, data, or information is sent to any server. No analytics, tracking, or data collection is implemented.
@@ -161,27 +126,13 @@ All image processing and overlay manipulation happens entirely in your browser u
 
 This is an educational tool for watch photography and quality control overlay analysis. It is intended for educational and informational purposes only. The tool provides measurement and documentation capabilities for watch inspection, regardless of the watch's origin or authenticity.
 
-This project does not endorse, promote, or facilitate the sale of counterfeit goods.
-
 ## Contributing
 
-Contributions are welcome! Feel free to:
+Contributions are welcome. Feel free to:
 - Report bugs or issues
 - Suggest new features or overlays
 - Submit pull requests
 - Improve documentation
-
-Please ensure your code follows the existing style and includes appropriate TypeScript types.
-
-## License
-
-MIT License - see LICENSE file for details
-
-## Acknowledgments
-
-Built for the watch enthusiast community. Inspired by the need for better quality control tools and systematic inspection methods.
-
-Special thanks to the communities that helped shape the requirements and features of this tool.
 
 ## Support
 

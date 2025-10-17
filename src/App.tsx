@@ -13,7 +13,7 @@ import { defaultChecklist } from './data/checklistData';
 import { watchGuides } from './data/watchGuides';
 import Konva from 'konva';
 
-// Feature Flags - Set to true to enable features
+// Set true to enable watch guides, it is WIP for now
 const ENABLE_WATCH_GUIDE_SELECTOR = false; // Change to true to enable watch model selection
 
 const initialOverlays: OverlayConfig[] = [
