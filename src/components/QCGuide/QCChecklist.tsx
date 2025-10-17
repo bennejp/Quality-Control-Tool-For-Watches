@@ -52,51 +52,72 @@ export const QCChecklist: React.FC<QCChecklistProps> = ({
       </div>
 
       <div className="qc-details-form">
-        <h3>Optional Details</h3>
+        <h3>Required Information <span className="required-badge">*Required for r/RepTime</span></h3>
         <div className="form-field">
-          <label>Dealer name:</label>
+          <label>
+            Dealer name: <span className="required-star">*</span>
+            {!dealerName && <span className="field-warning">Missing</span>}
+          </label>
           <input
             type="text"
             value={dealerName}
             onChange={(e) => onDealerNameChange(e.target.value)}
-            placeholder="Enter dealer name"
+            placeholder="e.g., Hont, Geektime, JTime"
+            className={!dealerName ? 'required-empty' : ''}
           />
         </div>
         <div className="form-field">
-          <label>Factory name:</label>
+          <label>
+            Factory name: <span className="required-star">*</span>
+            {!factoryName && <span className="field-warning">Missing</span>}
+          </label>
           <input
             type="text"
             value={factoryName}
             onChange={(e) => onFactoryNameChange(e.target.value)}
-            placeholder="Enter factory name"
+            placeholder="e.g., Clean, VSF, ZF, CF"
+            className={!factoryName ? 'required-empty' : ''}
           />
         </div>
         <div className="form-field">
-          <label>Model name (& version number):</label>
+          <label>
+            Model name (& version number): <span className="required-star">*</span>
+            {!modelName && <span className="field-warning">Missing</span>}
+          </label>
           <input
             type="text"
             value={modelName}
             onChange={(e) => onModelNameChange(e.target.value)}
-            placeholder="Enter model name and version"
+            placeholder="e.g., Submariner 116610 LN, Datejust 41"
+            className={!modelName ? 'required-empty' : ''}
           />
         </div>
         <div className="form-field">
-          <label>Price Paid:</label>
+          <label>
+            Price Paid: <span className="required-star">*</span>
+            {!pricePaid && <span className="field-warning">Missing</span>}
+          </label>
           <input
             type="text"
             value={pricePaid}
             onChange={(e) => onPricePaidChange(e.target.value)}
-            placeholder="Enter price paid"
+            placeholder="e.g., $488 USD"
+            className={!pricePaid ? 'required-empty' : ''}
           />
         </div>
         <div className="form-field">
-          <label>Album Links:</label>
+          <label>
+            Album Links: <span className="required-star">*</span>
+            {!albumLinks && <span className="field-warning">Missing</span>}
+          </label>
           <input
             type="text"
             value={albumLinks}
             onChange={(e) => onAlbumLinksChange(e.target.value)}
-            placeholder="Enter album links"
+            placeholder="Imgur or other image hosting link"
+            className={!albumLinks ? 'required-empty' : ''}
           />
+          <p className="field-help">💡 Upload QC photos to Imgur, paste link here</p>
         </div>
       </div>
 

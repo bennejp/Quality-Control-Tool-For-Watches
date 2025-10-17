@@ -64,14 +64,23 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
           </div>
 
           <div className="detail-section">
-            <h4>Your notes:</h4>
+            <h4>Your observations: <span className="observations-required">*Required for complete QC</span></h4>
             <textarea
-              className="notes-textarea"
+              className={`notes-textarea ${!item.userNotes || item.userNotes.trim().length < 10 ? 'notes-empty' : ''}`}
               value={item.userNotes}
               onChange={(e) => onNotesChange(item.id, e.target.value)}
-              placeholder="Add your observations..."
-              rows={3}
+              placeholder="Be specific! Example: '12 o'clock marker slightly tilted left, 6 o'clock looks centered, all other markers align well with hour grid overlay'"
+              rows={4}
             />
+            {item.userNotes && item.userNotes.trim().length > 0 && item.userNotes.trim().length < 10 && (
+              <p className="notes-warning">⚠️ Too short - add more detail (min 10 characters)</p>
+            )}
+            {(!item.userNotes || item.userNotes.trim().length === 0) && (
+              <p className="notes-help">
+                💡 <strong>Tips:</strong> Be specific about what you see. Instead of "looks good", say things like:
+                "All markers align with hour grid", "Bezel pip centered at 12 o'clock", or "6 o'clock marker 1-2° off"
+              </p>
+            )}
           </div>
         </div>
       )}

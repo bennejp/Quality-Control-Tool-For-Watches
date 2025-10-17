@@ -1,12 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Stage, Layer, Image as KonvaImage, Group, Rect } from 'react-konva';
 import { OverlayConfig } from '../types';
-import { CenterCircle } from '../overlays/CenterCircle';
 import { HourGrid } from '../overlays/HourGrid';
-import { MinuteGrid } from '../overlays/MinuteGrid';
-import { Crosshair } from '../overlays/Crosshair';
-import { DateGuide } from '../overlays/DateGuide';
-import { LogoGuide } from '../overlays/LogoGuide';
 import Konva from 'konva';
 
 interface CanvasProps {
@@ -149,18 +144,8 @@ export const Canvas: React.FC<CanvasProps> = ({
 
     const OverlayComponent = (() => {
       switch (overlay.id) {
-        case 'center-circle':
-          return <CenterCircle {...props} />;
         case 'hour-grid':
           return <HourGrid {...props} />;
-        case 'minute-grid':
-          return <MinuteGrid {...props} />;
-        case 'crosshair':
-          return <Crosshair {...props} />;
-        case 'date-guide':
-          return <DateGuide {...props} />;
-        case 'logo-guide':
-          return <LogoGuide {...props} />;
         default:
           return null;
       }

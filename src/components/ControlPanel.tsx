@@ -65,16 +65,16 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         <div className="control-group">
           <label className="control-label">
             Rotation
-            <span className="control-value">{imageRotation}°</span>
+            <span className="control-value">{imageRotation.toFixed(1)}°</span>
           </label>
           <input
             type="range"
             min="-180"
             max="180"
-            step="1"
+            step="0.1"
             value={imageRotation}
-            onChange={(e) => onImageRotationChange(parseInt(e.target.value))}
-            onKeyDown={(e) => handleKeyDown(e, imageRotation, -180, 180, 1, onImageRotationChange)}
+            onChange={(e) => onImageRotationChange(parseFloat(e.target.value))}
+            onKeyDown={(e) => handleKeyDown(e, imageRotation, -180, 180, 0.1, onImageRotationChange)}
             className="slider"
           />
         </div>
@@ -199,25 +199,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   />
                 </div>
 
-                {/* Thickness slider for minute-grid */}
-                {overlay.id === 'minute-grid' && (
-                  <div className="control-group">
-                    <label className="control-label">
-                      Line Thickness
-                      <span className="control-value">{overlay.thickness || 1}</span>
-                    </label>
-                    <input
-                      type="range"
-                      min="0.5"
-                      max="5"
-                      step="0.5"
-                      value={overlay.thickness || 1}
-                      onChange={(e) => onOverlayChange(overlay.id, 'thickness', parseFloat(e.target.value))}
-                      onKeyDown={(e) => handleKeyDown(e, overlay.thickness || 1, 0.5, 5, 0.5, (val) => onOverlayChange(overlay.id, 'thickness', val))}
-                      className="slider"
-                    />
-                  </div>
-                )}
               </div>
             )}
           </div>

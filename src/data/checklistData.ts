@@ -20,8 +20,7 @@ export const defaultChecklist: ChecklistItem[] = [
     id: 'dial-printing',
     title: 'Dial Printing',
     description: 'Check for any defects, crookedness, or poor quality in the dial text and printing.',
-    howToCheck: 'Use the Logo/Dial Alignment overlay to check if text is level. Look for smudges, missing ink, crooked text, or spelling errors. Check logo clarity and sharpness.',
-    recommendedOverlay: 'logo-guide',
+    howToCheck: 'Look for smudges, missing ink, crooked text, or spelling errors. Check logo clarity and sharpness. Compare text alignment visually.',
     severity: 'important',
     commonIssues: [
       'Logo is tilted or misaligned',
@@ -36,8 +35,7 @@ export const defaultChecklist: ChecklistItem[] = [
     id: 'date-wheel',
     title: 'Date Wheel Alignment/Printing',
     description: 'Verify the date sits centered in the date window and is clearly visible.',
-    howToCheck: 'Check multiple dates if possible. Look for consistent centering - some dates may sit better than others on the same disc.',
-    recommendedOverlay: 'date-guide',
+    howToCheck: 'Check multiple dates if possible. Look for consistent centering - some dates may sit better than others on the same disc. Visually compare to the date window edges.',
     severity: 'important',
     commonIssues: [
       'Date is not centered (very common!)',
@@ -51,8 +49,8 @@ export const defaultChecklist: ChecklistItem[] = [
     id: 'hand-alignment',
     title: 'Hand Alignment',
     description: 'Verify all hands are properly aligned and point to their correct positions.',
-    howToCheck: 'Use the Crosshair overlay. Check if the hour and minute hands meet at the exact center. Hands should not touch each other or the dial.',
-    recommendedOverlay: 'crosshair',
+    howToCheck: 'Use the Hour Grid overlay - it includes center alignment. Check if the hour and minute hands meet at the exact center. Hands should not touch each other or the dial.',
+    recommendedOverlay: 'hour-grid',
     severity: 'critical',
     commonIssues: [
       'Hands touch each other when overlapping',
@@ -65,8 +63,8 @@ export const defaultChecklist: ChecklistItem[] = [
     id: 'bezel-alignment',
     title: 'Bezel',
     description: 'Check if the bezel pip (triangle marker at 12 o\'clock) is centered, and any engravings are properly filled.',
-    howToCheck: 'Use the Hour Grid or Crosshair overlay. The bezel pip should align exactly with the 12 o\'clock position. Check if the bezel itself is evenly spaced around the case.',
-    recommendedOverlay: 'crosshair',
+    howToCheck: 'Use the Hour Grid overlay. The bezel pip should align exactly with the 12 o\'clock position. Check if the bezel itself is evenly spaced around the case.',
+    recommendedOverlay: 'hour-grid',
     severity: 'critical',
     commonIssues: [
       'Bezel pip slightly left or right of center',

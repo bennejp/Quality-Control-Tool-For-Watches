@@ -110,10 +110,14 @@ Make sure the file is a valid image format (JPG, PNG, WEBP, etc.)
 
 ## 💡 Tips & Tricks
 
-- **Multiple Overlays**: Enable multiple overlays at once for comprehensive analysis
-- **Keyboard Shortcuts**: Arrow keys to fine-tune overlay positions (when dragging)
+- **Fine Rotation**: Use 0.1° rotation precision with keyboard arrows for perfect watch alignment
+- **Keyboard Controls**: 
+  - Arrow keys to move overlays (Hold Shift for faster movement)
+  - Arrow keys on rotation slider for 0.1° adjustments
+- **Hour Grid is Enough**: The Hour Grid includes center alignment - no need for other overlays
 - **High-Res Export**: The exported image is 2x the display resolution for crisp prints
 - **Reset View**: Click "Clear Image" to start fresh with a new watch photo
+- **QC Checklist**: Switch to "QC Guide" tab for a comprehensive quality control checklist
 
 ---
 

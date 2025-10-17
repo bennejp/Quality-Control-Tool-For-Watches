@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bennejp.github.io/Quality-Control-Tool-For-Watches/sitemap.xml
+
