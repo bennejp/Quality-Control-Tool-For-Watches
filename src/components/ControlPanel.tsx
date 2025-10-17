@@ -135,11 +135,23 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     <input
                       type="number"
                       className="control-value-input"
-                      value={overlay.rotation.toFixed(1)}
+                      value={Math.round(overlay.rotation * 10) / 10}
                       onChange={(e) => {
                         const val = parseFloat(e.target.value);
-                        if (!isNaN(val) && val >= -180 && val <= 180) {
-                          onOverlayChange(overlay.id, 'rotation', val);
+                        if (!isNaN(val)) {
+                          // Clamp value between -180 and 180
+                          const clampedVal = Math.max(-180, Math.min(180, val));
+                          onOverlayChange(overlay.id, 'rotation', clampedVal);
+                        } else if (e.target.value === '' || e.target.value === '-') {
+                          // Allow clearing or typing negative sign
+                          onOverlayChange(overlay.id, 'rotation', 0);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        // Clean up value on blur
+                        const val = parseFloat(e.target.value);
+                        if (isNaN(val) || e.target.value === '') {
+                          onOverlayChange(overlay.id, 'rotation', 0);
                         }
                       }}
                       step="0.1"
@@ -155,7 +167,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                       step="0.1"
                       value={overlay.rotation}
                       onChange={(e) => onOverlayChange(overlay.id, 'rotation', parseFloat(e.target.value))}
-                      onKeyDown={(e) => handleKeyDown(e, overlay.rotation, -180, 180, 0.1, (val) => onOverlayChange(overlay.id, 'rotation', val))}
+                      onKeyDown={(e) => handleKeyDown(e, overlay.rotation, -180, 180, 1, (val) => onOverlayChange(overlay.id, 'rotation', val))}
                       className="slider"
                     />
                 </div>

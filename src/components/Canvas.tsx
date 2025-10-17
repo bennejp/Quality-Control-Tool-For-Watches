@@ -178,6 +178,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         onTap={handleClick}
         x={overlay.x}
         y={overlay.y}
+        rotation={overlay.rotation}
       >
         {/* Invisible hitbox for easier dragging */}
         <Rect
