@@ -80,62 +80,40 @@ export const ExportReport: React.FC<ExportReportProps> = ({
   };
 
   const generateRedditPost = () => {
-    let report = `## QC Request\n\n`;
+    let report = '';
+    let lineNumber = 1;
     
     // Required fields
-    report += `**Dealer name:** ${dealerName || '[MISSING]'}\n\n`;
-    report += `**Factory name:** ${factoryName || '[MISSING]'}\n\n`;
-    report += `**Model name:** ${modelName || '[MISSING]'}\n\n`;
-    report += `**Price paid:** ${pricePaid || '[MISSING]'}\n\n`;
-    report += `**Album Links:** ${albumLinks || '[MISSING]'}\n\n`;
+    report += `${lineNumber++}. Dealer name: ${dealerName || ''}\n\n`;
+    report += `${lineNumber++}. Factory name: ${factoryName || ''}\n\n`;
+    report += `${lineNumber++}. Model name (& version number): ${modelName || ''}\n\n`;
+    report += `${lineNumber++}. Price Paid: ${pricePaid || ''}\n\n`;
+    report += `${lineNumber++}. Album Links: ${albumLinks || ''}\n\n`;
     
-    report += `---\n\n`;
-    
-    // QC observations - only include items with actual notes
-    const itemsWithContent = checklistItems.filter(item => 
-      item.userNotes && item.userNotes.trim().length > 0
-    );
-    
-    if (itemsWithContent.length > 0) {
-      itemsWithContent.forEach((item) => {
-        const isGeneric = isGenericResponse(item.userNotes);
-        report += `**${item.title}:** ${item.userNotes.trim()}`;
-        if (isGeneric) {
-          report += ` *(Note: Consider adding more specific details)*`;
-        }
-        report += `\n\n`;
-      });
-    } else {
-      report += `*[No QC observations added]*\n\n`;
-    }
-    
-    report += `---\n\n`;
-    report += `*QC template generated with [Watch QC Tool](https://bennejp.github.io/Quality-Control-Tool-For-Watches/)*`;
+    // QC checklist items
+    checklistItems.forEach((item) => {
+      const notes = item.userNotes && item.userNotes.trim() ? item.userNotes.trim() : '';
+      report += `${lineNumber++}. ${item.title}: ${notes}\n\n`;
+    });
 
-    return report;
+    return report.trim();
   };
 
   const generateSimpleText = () => {
     let report = '';
+    let lineNumber = 1;
     
-    // Add details if provided
-    if (dealerName) report += `Dealer name: ${dealerName}\n`;
-    if (factoryName) report += `Factory name: ${factoryName}\n`;
-    if (modelName) report += `Model name: ${modelName}\n`;
-    if (pricePaid) report += `Price Paid: ${pricePaid}\n`;
-    if (albumLinks) report += `Album Links: ${albumLinks}\n`;
+    // Required fields
+    report += `${lineNumber++}. Dealer name: ${dealerName || ''}\n\n`;
+    report += `${lineNumber++}. Factory name: ${factoryName || ''}\n\n`;
+    report += `${lineNumber++}. Model name (& version number): ${modelName || ''}\n\n`;
+    report += `${lineNumber++}. Price Paid: ${pricePaid || ''}\n\n`;
+    report += `${lineNumber++}. Album Links: ${albumLinks || ''}\n\n`;
     
-    if (dealerName || factoryName || modelName || pricePaid || albumLinks) {
-      report += `\n`;
-    }
-
-    // Add checklist items with notes
-    checklistItems.forEach((item, index) => {
-      report += `${index + 1}. ${item.title}\n`;
-      if (item.userNotes && item.userNotes.trim()) {
-        report += `   ${item.userNotes.trim()}\n`;
-      }
-      report += `\n`;
+    // QC checklist items
+    checklistItems.forEach((item) => {
+      const notes = item.userNotes && item.userNotes.trim() ? item.userNotes.trim() : '';
+      report += `${lineNumber++}. ${item.title}: ${notes}\n\n`;
     });
 
     return report.trim();
@@ -320,7 +298,7 @@ export const ExportReport: React.FC<ExportReportProps> = ({
             </div>
             <p className="preview-tip">
               {isForReddit 
-                ? 'This is how your post will appear on Reddit (with markdown formatting)'
+                ? 'This is how your post will appear on Reddit (simple numbered list format)'
                 : 'This is your QC report in plain text format'
               }
             </p>

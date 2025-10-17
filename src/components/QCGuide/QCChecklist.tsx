@@ -50,7 +50,7 @@ export const QCChecklist: React.FC<QCChecklistProps> = ({
       </div>
 
       <div className="qc-details-form">
-        <h3>Required Information <span className="required-badge">*Required for r/RepTime</span></h3>
+        <h3>Required Information <span className="required-badge">*Required for r/RepTimeQC</span></h3>
         <div className="form-field">
           <label>
             Dealer name: <span className="required-star">*</span>
@@ -115,7 +115,6 @@ export const QCChecklist: React.FC<QCChecklistProps> = ({
             placeholder="Imgur or other image hosting link"
             className={!albumLinks ? 'required-empty' : ''}
           />
-          <p className="field-help">💡 Upload QC photos to Imgur, paste link here</p>
         </div>
       </div>
 

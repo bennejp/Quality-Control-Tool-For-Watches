@@ -9,9 +9,7 @@ export const defaultChecklist: ChecklistItem[] = [
     recommendedOverlay: 'hour-grid',
     severity: 'critical',
     commonIssues: [
-      '6 o\'clock marker is crooked',
-      '12 o\'clock market is crooked',
-      'Uneven spacing between markers'
+
     ],
     checked: false,
     userNotes: ''
@@ -23,10 +21,7 @@ export const defaultChecklist: ChecklistItem[] = [
     howToCheck: 'Look for smudges, missing ink, crooked text, or spelling errors. Check logo clarity and sharpness. Compare text alignment visually.',
     severity: 'important',
     commonIssues: [
-      'Logo is tilted or misaligned',
-      'Text is crooked (especially at 6 o\'clock)',
-      'Poor print quality or smudging',
-      'Uneven letter spacing'
+
     ],
     checked: false,
     userNotes: ''
@@ -38,9 +33,7 @@ export const defaultChecklist: ChecklistItem[] = [
     howToCheck: 'Check multiple dates if possible. Look for consistent centering - some dates may sit better than others on the same disc. Visually compare to the date window edges.',
     severity: 'important',
     commonIssues: [
-      'Date is not centered (very common!)',
-      'Inconsistent between different dates',
-      'Date font is wrong, make sure to compare to GEN'
+
     ],
     checked: false,
     userNotes: ''
@@ -53,8 +46,7 @@ export const defaultChecklist: ChecklistItem[] = [
     recommendedOverlay: 'hour-grid',
     severity: 'critical',
     commonIssues: [
-      'Hands touch each other when overlapping',
-      'Hour hand slightly misaligned with hour marker'
+
     ],
     checked: false,
     userNotes: ''
@@ -67,10 +59,7 @@ export const defaultChecklist: ChecklistItem[] = [
     recommendedOverlay: 'hour-grid',
     severity: 'critical',
     commonIssues: [
-      'Bezel pip slightly left or right of center',
-      'Bezel is too loose',
-      'Bezel engravings poorly filled',
-      'Bezel insert not seated properly'
+
     ],
     checked: false,
     userNotes: ''
@@ -82,9 +71,7 @@ export const defaultChecklist: ChecklistItem[] = [
     howToCheck: 'Look at where the bracelet meets the case. The gap should be minimal and even on both sides. Larger gaps indicate poor fitment.',
     severity: 'important',
     commonIssues: [
-      'Visible gap on one or both sides',
-      'Gap larger on one side than the other',
-      'SEL doesn\'t sit flush with case'
+
     ],
     checked: false,
     userNotes: ''
@@ -96,10 +83,7 @@ export const defaultChecklist: ChecklistItem[] = [
     howToCheck: 'Check the provided timegrapher results. Acceptable ranges: Rate ±1-20 s/d, Amplitude 250-310, Beat Error 0.0-1.0ms. Values outside these ranges may indicate movement issues.',
     severity: 'critical',
     commonIssues: [
-      'Rate too fast or slow (>±20 s/d)',
-      'Low amplitude (<250)',
-      'High beat error (>1.0ms)',
-      'Inconsistent across positions'
+
     ],
     checked: false,
     userNotes: ''
@@ -111,10 +95,7 @@ export const defaultChecklist: ChecklistItem[] = [
     howToCheck: 'Look for scratches, dents, fingerprints, dust under crystal, rough edges, poor polishing, or any other quality issues.',
     severity: 'important',
     commonIssues: [
-      'Scratches on case or crystal',
-      'Dust or particles under crystal',
-      'Poor finishing on case edges',
-      'Cyclops misaligned (if applicable)'
+
     ],
     checked: false,
     userNotes: ''

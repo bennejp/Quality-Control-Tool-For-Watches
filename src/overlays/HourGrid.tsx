@@ -11,7 +11,7 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
   const hours = 12;
   const lines = [];
   const circles = [];
-  const strokeWidth = 2;
+  const strokeWidth = 0.5; // Very thin lines
 
   for (let i = 0; i < hours; i++) {
     const angle = (i * 360 / hours + rotation) * Math.PI / 180;
@@ -41,7 +41,7 @@ export const HourGrid: React.FC<HourGridProps> = ({ size, color, opacity, rotati
         key={`hour-circle-${i}`}
         x={x2}
         y={y2}
-        radius={8}
+        radius={4}
         stroke={color}
         strokeWidth={strokeWidth}
         opacity={opacity}

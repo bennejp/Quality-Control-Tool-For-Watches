@@ -44,7 +44,6 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
           </div>
 
           <div className="detail-section">
-            <h4>Common issues:</h4>
             <ul className="issues-list">
               {item.commonIssues.map((issue, index) => (
                 <li key={index}>{issue}</li>
@@ -53,7 +52,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
           </div>
 
           <div className="detail-section">
-            <h4>Your observations: <span className="observations-required">*Required for r/RepTimeQC posts</span></h4>
+            <h4>Your observations: <span className="observations-required">*Required for r/RepTimeQC Posts</span></h4>
             <textarea
               className={`notes-textarea ${!item.userNotes || item.userNotes.trim().length < 10 ? 'notes-empty' : ''}`}
               value={item.userNotes}

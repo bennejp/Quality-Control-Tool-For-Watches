@@ -23,8 +23,8 @@ const initialOverlays: OverlayConfig[] = [
     enabled: false,
     size: 180,
     rotation: 0,
-    opacity: 0.8,
-    color: '#00d4ff',
+    opacity: 1,
+    color: '#ff00ff', // High visibility magenta
     x: 400,
     y: 300,
     zIndex: 0,

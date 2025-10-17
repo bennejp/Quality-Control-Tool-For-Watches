@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { OverlayConfig } from '../types';
 
 interface ControlPanelProps {
@@ -21,6 +22,17 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   onOverlayChange,
   onBringToFront,
 }) => {
+  // Track overlay rotation input values separately for better editing experience
+  const [overlayRotationInputs, setOverlayRotationInputs] = useState<Record<string, string>>({});
+
+  // Initialize rotation inputs when overlays change
+  useEffect(() => {
+    const inputs: Record<string, string> = {};
+    overlays.forEach(overlay => {
+      inputs[overlay.id] = (Math.round(overlay.rotation * 10) / 10).toString();
+    });
+    setOverlayRotationInputs(inputs);
+  }, [overlays.length]); // Only run when overlay count changes
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     currentValue: number,
@@ -133,30 +145,48 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   <label className="control-label">
                     Rotation
                     <input
-                      type="number"
+                      type="text"
                       className="control-value-input"
-                      value={Math.round(overlay.rotation * 10) / 10}
+                      value={overlayRotationInputs[overlay.id] ?? overlay.rotation.toFixed(1)}
                       onChange={(e) => {
-                        const val = parseFloat(e.target.value);
+                        // Allow any input while typing
+                        setOverlayRotationInputs(prev => ({
+                          ...prev,
+                          [overlay.id]: e.target.value
+                        }));
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          const val = parseFloat(overlayRotationInputs[overlay.id] || '0');
+                          if (!isNaN(val)) {
+                            const clampedVal = Math.max(-180, Math.min(180, val));
+                            onOverlayChange(overlay.id, 'rotation', clampedVal);
+                            setOverlayRotationInputs(prev => ({
+                              ...prev,
+                              [overlay.id]: clampedVal.toFixed(1)
+                            }));
+                          }
+                        }
+                      }}
+                      onBlur={() => {
+                        // Apply value on blur
+                        const val = parseFloat(overlayRotationInputs[overlay.id] || '0');
                         if (!isNaN(val)) {
-                          // Clamp value between -180 and 180
                           const clampedVal = Math.max(-180, Math.min(180, val));
                           onOverlayChange(overlay.id, 'rotation', clampedVal);
-                        } else if (e.target.value === '' || e.target.value === '-') {
-                          // Allow clearing or typing negative sign
-                          onOverlayChange(overlay.id, 'rotation', 0);
+                          setOverlayRotationInputs(prev => ({
+                            ...prev,
+                            [overlay.id]: clampedVal.toFixed(1)
+                          }));
+                        } else {
+                          // Reset to current value if invalid
+                          setOverlayRotationInputs(prev => ({
+                            ...prev,
+                            [overlay.id]: overlay.rotation.toFixed(1)
+                          }));
                         }
                       }}
-                      onBlur={(e) => {
-                        // Clean up value on blur
-                        const val = parseFloat(e.target.value);
-                        if (isNaN(val) || e.target.value === '') {
-                          onOverlayChange(overlay.id, 'rotation', 0);
-                        }
-                      }}
-                      step="0.1"
-                      min="-180"
-                      max="180"
+                      placeholder="0.0"
                     />
                     <span className="control-unit">°</span>
                   </label>
@@ -166,7 +196,14 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                       max="180"
                       step="0.1"
                       value={overlay.rotation}
-                      onChange={(e) => onOverlayChange(overlay.id, 'rotation', parseFloat(e.target.value))}
+                      onChange={(e) => {
+                        const newVal = parseFloat(e.target.value);
+                        onOverlayChange(overlay.id, 'rotation', newVal);
+                        setOverlayRotationInputs(prev => ({
+                          ...prev,
+                          [overlay.id]: newVal.toFixed(1)
+                        }));
+                      }}
                       onKeyDown={(e) => handleKeyDown(e, overlay.rotation, -180, 180, 1, (val) => onOverlayChange(overlay.id, 'rotation', val))}
                       className="slider"
                     />
