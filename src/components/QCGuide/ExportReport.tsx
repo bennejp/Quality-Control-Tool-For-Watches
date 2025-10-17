@@ -29,6 +29,7 @@ export const ExportReport: React.FC<ExportReportProps> = ({
 }) => {
   const [showValidation, setShowValidation] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [isForReddit, setIsForReddit] = useState(true);
 
   // Detect generic/lazy responses
   const isGenericResponse = (text: string): boolean => {
@@ -114,36 +115,77 @@ export const ExportReport: React.FC<ExportReportProps> = ({
     return report;
   };
 
-  const handleExport = () => {
+  const generateSimpleText = () => {
+    let report = '';
+    
+    // Add details if provided
+    if (dealerName) report += `Dealer name: ${dealerName}\n`;
+    if (factoryName) report += `Factory name: ${factoryName}\n`;
+    if (modelName) report += `Model name: ${modelName}\n`;
+    if (pricePaid) report += `Price Paid: ${pricePaid}\n`;
+    if (albumLinks) report += `Album Links: ${albumLinks}\n`;
+    
+    if (dealerName || factoryName || modelName || pricePaid || albumLinks) {
+      report += `\n`;
+    }
+
+    // Add checklist items with notes
+    checklistItems.forEach((item, index) => {
+      report += `${index + 1}. ${item.title}\n`;
+      if (item.userNotes && item.userNotes.trim()) {
+        report += `   ${item.userNotes.trim()}\n`;
+      }
+      report += `\n`;
+    });
+
+    return report.trim();
+  };
+
+  const handleExportReddit = () => {
     const score = getCompletionScore();
     const missingFields = getMissingRequiredFields();
 
-    // Block if critical requirements not met
-    if (missingFields.length > 0 || score < 60) {
+    // Only enforce strict requirements if posting to Reddit
+    if (isForReddit && (missingFields.length > 0 || score < 60)) {
       setShowValidation(true);
       return;
     }
 
-    const report = generateRedditPost();
+    const report = isForReddit ? generateRedditPost() : generateSimpleText();
+    const filename = isForReddit ? 'reptime-qc-post' : 'watch-qc-report';
 
     // Copy to clipboard
     navigator.clipboard.writeText(report).then(() => {
-      alert('✅ QC post copied to clipboard!\n\nNext steps:\n1. Go to r/RepTimeQC\n2. Create a new post\n3. Paste (Ctrl+V)\n4. Upload your QC images\n5. Submit');
+      if (isForReddit) {
+        alert('QC post copied to clipboard!\n\nNext steps:\n1. Go to r/RepTimeQC\n2. Create a new post\n3. Paste (Ctrl+V)\n4. Upload your QC images\n5. Submit');
+      } else {
+        alert('QC report copied to clipboard!\n\nYour report has been copied and downloaded for your records.');
+      }
     }).catch(() => {
       // Fallback: just download
-      alert('✅ QC post downloaded!\n\nOpen the file and copy the contents to your Reddit post.');
+      alert('Report downloaded!\n\nOpen the file to view your QC report.');
     });
 
     // Also download as backup
-    downloadAsFile(report);
+    downloadAsFile(report, filename);
   };
 
-  const downloadAsFile = (content: string) => {
+  const handleCopyToClipboard = () => {
+    const report = isForReddit ? generateRedditPost() : generateSimpleText();
+    
+    navigator.clipboard.writeText(report).then(() => {
+      alert('Copied to clipboard!');
+    }).catch(() => {
+      alert('Failed to copy. Please use the export button to download instead.');
+    });
+  };
+
+  const downloadAsFile = (content: string, prefix: string = 'report') => {
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `reptime-qc-post-${Date.now()}.txt`;
+    link.download = `${prefix}-${Date.now()}.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -160,35 +202,35 @@ export const ExportReport: React.FC<ExportReportProps> = ({
 
   return (
     <div className="export-report">
-      {/* Completion Score */}
-      <div className="completion-score">
-        <div className="score-header">
-          <span className="score-label">Post Quality Score</span>
-          <span className={`score-value ${isComplete ? 'complete' : isAcceptable ? 'acceptable' : 'incomplete'}`}>
-            {score}%
-          </span>
-        </div>
-        <div className="score-bar">
-          <div 
-            className={`score-fill ${isComplete ? 'complete' : isAcceptable ? 'acceptable' : 'incomplete'}`}
-            style={{ width: `${score}%` }}
+      {/* Reddit Toggle */}
+      <div className="reddit-toggle-section">
+        <label className="reddit-toggle-label">
+          <input
+            type="checkbox"
+            checked={isForReddit}
+            onChange={(e) => setIsForReddit(e.target.checked)}
+            className="reddit-toggle-checkbox"
           />
-        </div>
-        <div className="score-description">
-          {isComplete && '✓ Excellent! Ready to post'}
-          {!isComplete && isAcceptable && '⚠️ Acceptable, but could be more detailed'}
-          {!isAcceptable && '❌ Needs more work to meet r/RepTime standards'}
-        </div>
+          <span className="reddit-toggle-text">
+            Posting to r/RepTimeQC {isForReddit && <span className="reddit-badge">Strict Mode</span>}
+          </span>
+        </label>
+        {!isForReddit && (
+          <p className="reddit-toggle-hint">
+            Relaxed mode - Quality checks are optional for personal use
+          </p>
+        )}
       </div>
 
+
       {/* Quality Issues List */}
-      {(missingFields.length > 0 || itemsWithoutNotes.length > 0 || genericItems.length > 0) && (
+      {isForReddit && (missingFields.length > 0 || itemsWithoutNotes.length > 0 || genericItems.length > 0) && (
         <div className="quality-issues">
-          <h4>📋 Quality Checklist</h4>
+          <h4>Quality Checklist</h4>
           
           {missingFields.length > 0 && (
             <div className="issue-section error">
-              <strong>❌ Missing Required Fields ({missingFields.length}):</strong>
+              <strong>Missing Required Fields ({missingFields.length}):</strong>
               <ul>
                 {missingFields.map((field, i) => (
                   <li key={i}>{field}</li>
@@ -199,27 +241,27 @@ export const ExportReport: React.FC<ExportReportProps> = ({
 
           {itemsWithoutNotes.length > 0 && (
             <div className="issue-section warning">
-              <strong>⚠️ Items Without Notes ({itemsWithoutNotes.length}/{checklistItems.length}):</strong>
+              <strong>Items Without Notes ({itemsWithoutNotes.length}/{checklistItems.length}):</strong>
               <ul>
                 {itemsWithoutNotes.slice(0, 3).map((item, i) => (
                   <li key={i}>{item.title}</li>
                 ))}
                 {itemsWithoutNotes.length > 3 && <li>...and {itemsWithoutNotes.length - 3} more</li>}
               </ul>
-              <p className="issue-tip">💡 Add specific observations for each item you check</p>
+              <p className="issue-tip">Tip: Add specific observations for each item you check</p>
             </div>
           )}
 
           {genericItems.length > 0 && (
             <div className="issue-section warning">
-              <strong>⚠️ Generic Responses Detected ({genericItems.length}):</strong>
+              <strong>Generic Responses Detected ({genericItems.length}):</strong>
               <ul>
                 {genericItems.slice(0, 3).map((item, i) => (
                   <li key={i}>{item.title}: "{item.userNotes}"</li>
                 ))}
               </ul>
               <p className="issue-tip">
-                💡 Instead of "looks good", be specific: "12 o'clock marker slightly tilted right" or "All markers align well with hour grid"
+                Tip: Instead of "looks good", be specific: "12 o'clock marker slightly tilted right" or "All markers align well with hour grid"
               </p>
             </div>
           )}
@@ -227,33 +269,33 @@ export const ExportReport: React.FC<ExportReportProps> = ({
       )}
 
       {/* Validation Modal */}
-      {showValidation && (
+      {isForReddit && showValidation && (
         <div className="validation-modal">
           <div className="validation-content">
-            <h3>⚠️ Post Quality Too Low</h3>
+            <h3>Post Quality Too Low</h3>
             <p>Your QC post does not meet r/RepTime minimum standards and <strong>may be removed by moderators</strong>.</p>
             
             <div className="validation-requirements">
               <h4>Required to Export:</h4>
               <ul>
                 <li className={missingFields.length === 0 ? 'met' : 'unmet'}>
-                  {missingFields.length === 0 ? '✓' : '❌'} All required fields (Dealer, Factory, Model, Price, Album)
+                  {missingFields.length === 0 ? 'PASS' : 'FAIL'} - All required fields (Dealer, Factory, Model, Price, Album)
                 </li>
                 <li className={score >= 60 ? 'met' : 'unmet'}>
-                  {score >= 60 ? '✓' : '❌'} At least 60% completion score (currently {score}%)
+                  {score >= 60 ? 'PASS' : 'FAIL'} - At least 60% completion score (currently {score}%)
                 </li>
                 <li className={itemsWithoutNotes.length <= 4 ? 'met' : 'unmet'}>
-                  {itemsWithoutNotes.length <= 4 ? '✓' : '❌'} Notes for most checklist items
+                  {itemsWithoutNotes.length <= 4 ? 'PASS' : 'FAIL'} - Notes for most checklist items
                 </li>
               </ul>
             </div>
 
             <p className="validation-advice">
               <strong>What makes a good QC post:</strong><br/>
-              • Specific observations (e.g., "6 o'clock marker tilted 2° left")<br/>
-              • Actual issues found (or confirm nothing found)<br/>
-              • Reference to images (e.g., "In photo 3, the bezel pip...")<br/>
-              • NOT generic phrases like "looks good" or "GL"
+              - Specific observations (e.g., "6 o'clock marker tilted 2 degrees left")<br/>
+              - Actual issues found (or confirm nothing found)<br/>
+              - Reference to images (e.g., "In photo 3, the bezel pip...")<br/>
+              - NOT generic phrases like "looks good" or "GL"
             </p>
 
             <div className="validation-actions">
@@ -272,17 +314,22 @@ export const ExportReport: React.FC<ExportReportProps> = ({
       {showPreview && (
         <div className="validation-modal">
           <div className="validation-content preview-content">
-            <h3>📄 Preview Your Post</h3>
+            <h3>Preview Your {isForReddit ? 'Post' : 'Report'}</h3>
             <div className="preview-box">
-              <pre>{generateRedditPost()}</pre>
+              <pre>{isForReddit ? generateRedditPost() : generateSimpleText()}</pre>
             </div>
-            <p className="preview-tip">This is how your post will appear on Reddit (with markdown formatting)</p>
+            <p className="preview-tip">
+              {isForReddit 
+                ? 'This is how your post will appear on Reddit (with markdown formatting)'
+                : 'This is your QC report in plain text format'
+              }
+            </p>
             <div className="validation-actions">
               <button 
                 className="validation-button-primary"
                 onClick={() => {
                   setShowPreview(false);
-                  handleExport();
+                  handleExportReddit();
                 }}
               >
                 Looks Good - Export Now
@@ -303,25 +350,50 @@ export const ExportReport: React.FC<ExportReportProps> = ({
         <button 
           className="preview-button"
           onClick={() => setShowPreview(true)}
-          disabled={!isAcceptable}
+          disabled={isForReddit && !isAcceptable}
         >
-          Preview Post
+          {isForReddit ? 'Preview Post' : 'Preview Report'}
         </button>
         
         <button 
-          className={`export-report-button ${isComplete ? 'ready' : isAcceptable ? 'acceptable' : 'not-ready'}`}
-          onClick={handleExport}
+          className="copy-button"
+          onClick={handleCopyToClipboard}
         >
-          {isComplete && '✓ Export QC Post'}
-          {!isComplete && isAcceptable && '⚠️ Export Post (Could Be Better)'}
-          {!isAcceptable && '❌ Cannot Export Yet'}
+          Copy to Clipboard
+        </button>
+      </div>
+
+      <div className="export-actions">
+        <button 
+          className={`export-report-button full-width ${
+            isForReddit 
+              ? (isComplete ? 'ready' : isAcceptable ? 'acceptable' : 'not-ready')
+              : 'ready'
+          }`}
+          onClick={handleExportReddit}
+        >
+          {isForReddit ? (
+            <>
+              {isComplete && 'Export QC Post'}
+              {!isComplete && isAcceptable && 'Export Post (Could Be Better)'}
+              {!isAcceptable && 'Cannot Export Yet'}
+            </>
+          ) : (
+            'Export QC Report'
+          )}
         </button>
       </div>
       
       <p className="export-hint">
-        {isComplete && 'Copies to clipboard in Reddit format, ready to paste'}
-        {!isComplete && isAcceptable && `${score}% - Consider adding more detail for better feedback`}
-        {!isAcceptable && `${score}% - Fill required fields and add observations`}
+        {isForReddit ? (
+          <>
+            {isComplete && 'Copies to clipboard in Reddit format, ready to paste'}
+            {!isComplete && isAcceptable && `${score}% - Consider adding more detail for better feedback`}
+            {!isAcceptable && `${score}% - Fill required fields and add observations`}
+          </>
+        ) : (
+          'Exports as plain text file and copies to clipboard - no restrictions'
+        )}
       </p>
     </div>
   );

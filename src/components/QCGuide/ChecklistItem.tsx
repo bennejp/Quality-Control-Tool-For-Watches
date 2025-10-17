@@ -5,14 +5,12 @@ interface ChecklistItemProps {
   item: ChecklistItemType;
   onToggle: (id: string) => void;
   onNotesChange: (id: string, notes: string) => void;
-  onUseOverlay?: (overlayId: string) => void;
 }
 
 export const ChecklistItem: React.FC<ChecklistItemProps> = ({
   item,
   onToggle,
-  onNotesChange,
-  onUseOverlay
+  onNotesChange
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -45,15 +43,6 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
             <p>{item.howToCheck}</p>
           </div>
 
-          {item.recommendedOverlay && onUseOverlay && (
-            <button 
-              className="use-overlay-button"
-              onClick={() => onUseOverlay(item.recommendedOverlay!)}
-            >
-              Use Recommended Overlay
-            </button>
-          )}
-
           <div className="detail-section">
             <h4>Common issues:</h4>
             <ul className="issues-list">
@@ -64,7 +53,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
           </div>
 
           <div className="detail-section">
-            <h4>Your observations: <span className="observations-required">*Required for complete QC</span></h4>
+            <h4>Your observations: <span className="observations-required">*Required for r/RepTimeQC posts</span></h4>
             <textarea
               className={`notes-textarea ${!item.userNotes || item.userNotes.trim().length < 10 ? 'notes-empty' : ''}`}
               value={item.userNotes}
@@ -77,7 +66,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
             )}
             {(!item.userNotes || item.userNotes.trim().length === 0) && (
               <p className="notes-help">
-                💡 <strong>Tips:</strong> Be specific about what you see. Instead of "looks good", say things like:
+                <strong>Tips:</strong> Be specific about what you see. Instead of "looks good", say things like:
                 "All markers align with hour grid", "Bezel pip centered at 12 o'clock", or "6 o'clock marker 1-2° off"
               </p>
             )}

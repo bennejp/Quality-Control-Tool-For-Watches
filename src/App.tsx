@@ -114,16 +114,6 @@ function App() {
     );
   };
 
-  const handleUseOverlay = (overlayId: string) => {
-    // Switch to controls tab and enable the overlay
-    setActiveTab('controls');
-    setOverlays(currentOverlays =>
-      currentOverlays.map(overlay =>
-        overlay.id === overlayId ? { ...overlay, enabled: true } : overlay
-      )
-    );
-  };
-
   const handleBringToFront = (id: string) => {
     const maxZIndex = Math.max(...overlays.map(o => o.zIndex || 0));
     setOverlays(overlays.map(overlay =>
@@ -266,7 +256,6 @@ function App() {
                   items={checklistItems}
                   onToggleItem={handleChecklistToggle}
                   onUpdateNotes={handleChecklistNotesUpdate}
-                  onUseOverlay={handleUseOverlay}
                   dealerName={dealerName}
                   factoryName={factoryName}
                   modelName={modelName}

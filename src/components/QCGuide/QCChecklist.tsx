@@ -5,7 +5,6 @@ interface QCChecklistProps {
   items: ChecklistItemType[];
   onToggleItem: (id: string) => void;
   onUpdateNotes: (id: string, notes: string) => void;
-  onUseOverlay?: (overlayId: string) => void;
   dealerName: string;
   factoryName: string;
   modelName: string;
@@ -22,7 +21,6 @@ export const QCChecklist: React.FC<QCChecklistProps> = ({
   items,
   onToggleItem,
   onUpdateNotes,
-  onUseOverlay,
   dealerName,
   factoryName,
   modelName,
@@ -128,7 +126,6 @@ export const QCChecklist: React.FC<QCChecklistProps> = ({
             item={item}
             onToggle={onToggleItem}
             onNotesChange={onUpdateNotes}
-            onUseOverlay={onUseOverlay}
           />
         ))}
       </div>
