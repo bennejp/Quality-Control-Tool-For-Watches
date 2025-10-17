@@ -1,157 +1,195 @@
-# Watch QC Tool - Quality Control Overlay Analysis
+# Watch QC Tool
 
-A professional browser-based React application for watch quality control (QC) overlay analysis. Upload watch photos, apply precision overlays, and export annotated images - all running client-side with no server required.
+A browser-based quality control tool for watch enthusiasts. Upload watch photos, apply precision overlays, and systematically document your observations with a built-in checklist system.
 
-![Watch QC Tool](https://img.shields.io/badge/React-18.2-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue) ![Vite](https://img.shields.io/badge/Vite-5.0-purple)
+## About
 
-## 🎯 Features
+This tool was created to help watch collectors and enthusiasts perform thorough quality control inspections. Whether you're examining alignment, checking dial printing, or verifying bezel positioning, this tool provides the overlays and structure you need to conduct a complete QC inspection.
 
-- **📷 Image Upload**: Upload watch photos with drag-and-drop support
-- **🎨 Multiple Overlays**: Pre-built QC overlays for comprehensive analysis
-  - Center Circles - Concentric circles for bezel alignment
-  - Hour Grid - 12 radial lines for hour marker alignment
-  - Minute Grid - 60 radial lines for minute marker alignment
-  - Crosshair - Precise center alignment tool
-  - Date Window Guide - Frame for date wheel centering
-  - Logo/Dial Guide - Alignment guides for dial printing
-- **⚙️ Advanced Controls**:
-  - Independent zoom for image (50% - 400%)
-  - Image rotation (-180° to 180°)
-  - Per-overlay size, rotation, opacity, and color customization
-- **💾 Export**: Download high-quality PNG with overlays applied
-- **📱 Responsive**: Works on both desktop and mobile devices
-- **🔒 Privacy**: 100% client-side - no uploads, no server, no tracking
+All processing happens entirely in your browser. Your photos never leave your device, and no account or login is required.
 
-## 🚀 Quick Start
+## Features
+
+### Precision Overlay System
+- Multiple overlay types: Hour Grid, Minute Grid (60 markers), Crosshair, Date Window Guide, and more
+- Independent controls for each overlay: position, size, rotation, opacity, and line thickness
+- Drag overlays with mouse or use arrow keys for pixel-perfect positioning
+- Layer management with "bring to front" functionality for multiple overlays
+- Default cyan overlay color optimized for visibility
+
+### Quality Control Checklist
+- Structured checklist covering all major QC points: index alignment, dial printing, date wheel, bezel, SELs, hand alignment, timegrapher numbers, and overall quality
+- Add detailed notes for each checkpoint
+- Optional fields for dealer information, factory, model details, price, and album links
+- Export your completed QC report to clipboard or download as text file
+
+### Image Controls
+- Upload and analyze watch photos directly in your browser
+- Independent zoom and rotation controls for the image
+- Drag to reposition images
+- Mobile-friendly touch controls: pinch-to-zoom and drag gestures
+- Export annotated images with overlays included
+
+### Mobile Optimization
+- Collapsible sidebar on mobile devices for full-screen canvas viewing
+- Touch-optimized controls and large tap targets
+- Responsive design that works on phones, tablets, and desktops
+
+## Installation
 
 ### Prerequisites
+- Node.js (version 16 or higher)
+- npm or yarn
 
-- Node.js 16+ and npm (or yarn/pnpm)
+### Setup
 
-### Installation
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/QC.git
+cd QC
+```
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+2. Install dependencies:
+```bash
+npm install
+```
 
-2. **Start development server**:
-   ```bash
-   npm run dev
-   ```
+3. Start the development server:
+```bash
+npm run dev
+```
 
-3. **Open in browser**:
-   - Navigate to `http://localhost:5173`
+4. Open your browser and navigate to `http://localhost:5173`
 
 ### Build for Production
 
+To create a production build:
 ```bash
 npm run build
 ```
 
-The built files will be in the `dist/` folder. Deploy them to any static hosting service (Netlify, Vercel, GitHub Pages, etc.).
+The built files will be in the `dist` directory.
 
-## 🎓 How to Use
+## Usage
 
-1. **Upload a Watch Photo**
-   - Click "Upload Watch Photo" button
-   - Select an image from your device
-   - The image will appear in the canvas area
+### Basic Workflow
 
-2. **Apply Overlays**
-   - Enable desired overlays from the sidebar (checkboxes)
-   - Adjust size, rotation, opacity, and color for each overlay
-   - **Drag overlays** directly on the canvas to reposition them
-   - Fine-tune overlay settings with the sliders
+1. **Upload an Image**: Click the upload button and select a watch photo from your device
+2. **Apply Overlays**: Enable the overlays you need (Hour Grid for index alignment, Crosshair for center alignment, etc.)
+3. **Adjust Overlays**: Use the controls to position, rotate, and resize overlays to match your watch
+4. **Fine-tune**: Use arrow keys to move overlays with precision (hold Shift for 10px jumps)
+5. **Document Findings**: Switch to the "QC Guide" tab and fill out the checklist with your observations
+6. **Export**: Copy your report to clipboard for posting online, or download as a text file
 
-3. **Adjust Image**
-   - Use zoom slider to resize the image
-   - Use rotation slider to rotate the image
-   - Pan by dragging the image
+### Keyboard Shortcuts
 
-4. **Export Result**
-   - Click "Export as PNG" to download
-   - The exported image includes all active overlays
+- **Arrow Keys**: Move selected overlay by 1 pixel
+- **Shift + Arrow Keys**: Move selected overlay by 10 pixels
+- **Click Slider + Arrow Keys**: Fine-adjust slider values
 
-## 🔍 Watch QC Checklist
+### Tips for Best Results
 
-Use the overlays to check for these common quality issues:
+- Use top-down photos for most accurate overlay alignment
+- Start with the center alignment overlays (Crosshair or Center Circles) to establish your reference point
+- Adjust overlay opacity if you need to see the watch details more clearly
+- Use the "Bring to Front" button when working with multiple overlays
+- On mobile, collapse the sidebar for full-screen analysis
 
-- ✅ **Index Alignment**: Hour markers properly aligned
-- ✅ **Date Wheel**: Date centering in window
-- ✅ **Bezel**: Pip centered and engravings filled
-- ✅ **SEL Gaps**: Solid End Link gaps between bracelet and case
-- ✅ **Hand Alignment**: Hands point to correct positions
-- ✅ **Dial Printing**: Text and logo alignment
-- ✅ **Timegrapher**: Movement performance metrics
+## Technology Stack
 
-## 🛠️ Technology Stack
+- React 18
+- TypeScript
+- Vite
+- Konva (canvas manipulation)
+- React Konva (React bindings for Konva)
 
-- **React 18** - UI framework
-- **TypeScript** - Type safety
-- **Vite** - Fast build tool
-- **React Konva** - Canvas rendering
-- **Konva** - 2D canvas library
-- **CSS3** - Modern styling
+## Feature Toggles
 
-## 📁 Project Structure
+The project includes feature flags that can be easily enabled or disabled. See `src/App.tsx`:
 
-```
-QC/
-├── src/
-│   ├── components/         # React components
-│   │   ├── Canvas.tsx      # Main canvas with image and overlays
-│   │   ├── ControlPanel.tsx # Control sliders and toggles
-│   │   ├── ExportButton.tsx # Export functionality
-│   │   └── ImageUploader.tsx # File upload
-│   ├── overlays/           # Overlay components
-│   │   ├── CenterCircle.tsx
-│   │   ├── Crosshair.tsx
-│   │   ├── DateGuide.tsx
-│   │   ├── HourGrid.tsx
-│   │   ├── LogoGuide.tsx
-│   │   └── MinuteGrid.tsx
-│   ├── types/              # TypeScript definitions
-│   ├── styles/             # CSS styles
-│   ├── App.tsx             # Main app component
-│   └── main.tsx            # Entry point
-├── index.html
-├── package.json
-├── tsconfig.json
-└── vite.config.ts
+```typescript
+const ENABLE_WATCH_GUIDE_SELECTOR = false; // Set to true to enable watch model guides
 ```
 
-## 🎨 Customization
+## Project Structure
 
-### Adding New Overlays
-
-1. Create a new overlay component in `src/overlays/`
-2. Import and add to the Canvas component's render logic
-3. Add overlay configuration to `initialOverlays` in `App.tsx`
-
-### Changing Colors
-
-Edit CSS variables in `src/styles/index.css`:
-```css
-:root {
-  --accent-primary: #ec4899;  /* Pink */
-  --accent-secondary: #8b5cf6; /* Purple */
-}
+```
+src/
+├── components/          # React components
+│   ├── Canvas.tsx      # Main canvas with overlays
+│   ├── ControlPanel.tsx # Sidebar controls
+│   ├── ImageUploader.tsx
+│   ├── ExportButton.tsx
+│   └── QCGuide/        # QC checklist components
+├── overlays/           # Overlay shape components
+│   ├── MinuteGrid.tsx
+│   ├── HourGrid.tsx
+│   ├── Crosshair.tsx
+│   └── ...
+├── data/               # Static data
+│   ├── checklistData.ts
+│   └── watchGuides.ts
+├── types/              # TypeScript type definitions
+├── styles/             # CSS styling
+└── App.tsx            # Main application component
 ```
 
-## 📝 License
+## Browser Compatibility
 
-This project is open source and available for personal and commercial use.
+- Chrome/Edge (recommended)
+- Firefox
+- Safari
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
-## 🤝 Contributing
+Modern browsers with ES2020+ support required.
 
-Contributions, issues, and feature requests are welcome!
+## Deployment
 
-## 👤 Author
+This project is configured for deployment to GitHub Pages. The workflow is defined in `.github/workflows/deploy.yml`.
 
-Created by dodommul8
+To deploy:
+1. Push to the main branch
+2. GitHub Actions will automatically build and deploy to GitHub Pages
+
+Alternatively, you can deploy to any static hosting service (Netlify, Vercel, etc.) by building and uploading the `dist` folder.
+
+## Privacy
+
+All image processing and overlay manipulation happens entirely in your browser using client-side JavaScript. No images, data, or information is sent to any server. No analytics, tracking, or data collection is implemented.
+
+## Disclaimer
+
+This is an educational tool for watch photography and quality control overlay analysis. It is intended for educational and informational purposes only. The tool provides measurement and documentation capabilities for watch inspection, regardless of the watch's origin or authenticity.
+
+This project does not endorse, promote, or facilitate the sale of counterfeit goods.
+
+## Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs or issues
+- Suggest new features or overlays
+- Submit pull requests
+- Improve documentation
+
+Please ensure your code follows the existing style and includes appropriate TypeScript types.
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Acknowledgments
+
+Built for the watch enthusiast community. Inspired by the need for better quality control tools and systematic inspection methods.
+
+Special thanks to the communities that helped shape the requirements and features of this tool.
+
+## Support
+
+If you encounter issues or have questions:
+- Open an issue on GitHub
+- Check existing issues for similar problems
+- Provide detailed information including browser version and steps to reproduce
 
 ---
 
-**Happy QC'ing! 🔍⌚**
-
+Made with care for watch enthusiasts by watch enthusiasts.
