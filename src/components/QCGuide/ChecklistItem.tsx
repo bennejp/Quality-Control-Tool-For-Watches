@@ -61,7 +61,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
               rows={4}
             />
             {item.userNotes && item.userNotes.trim().length > 0 && item.userNotes.trim().length < 10 && (
-              <p className="notes-warning">⚠️ Too short - add more detail (min 10 characters)</p>
+              <p className="notes-warning">Too short - add more detail (min 10 characters)</p>
             )}
             {(!item.userNotes || item.userNotes.trim().length === 0) && (
               <p className="notes-help">
